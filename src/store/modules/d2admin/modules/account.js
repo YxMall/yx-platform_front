@@ -32,8 +32,7 @@ export default {
           // token 代表用户当前登录状态 建议在网络请求中携带 token
           // 如有必要 token 需要定时更新，默认保存一天
           // util.cookies.set('uuid', res.uuid)
-          console.log(res)
-          util.cookies.set('accessToken', res.data)
+          util.cookies.set('accessToken', res)
           // 设置 vuex 用户信息
           await dispatch('d2admin/user/set', {
             name: res.name
