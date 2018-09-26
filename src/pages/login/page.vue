@@ -24,7 +24,7 @@
               <el-input type="text" v-model="formLogin.code" placeholder="- - - -">
                 <template slot="prepend">验证码</template>
                 <template slot="append">
-                  <img class="login-code" src="./image/login-code.png">
+                  <img class="login-code" :src="path" @click="getImageCodePath">
                 </template>
               </el-input>
             </el-form-item>
@@ -34,7 +34,7 @@
       </div>
       <!-- 快速登录按钮 -->
       <el-button size="default" type="info" class="button-help" @click="dialogVisible = true">
-        快速选择用户（测试功能）
+          短信登录
       </el-button>
     </div>
     <el-dialog
@@ -57,6 +57,7 @@
 /* eslint-disable */
 require('particles.js')
 import config from './config/default'
+import util from '@/libs/util.js'
 import { mapActions } from 'vuex'
 import axios from 'axios'
 export default {
@@ -81,11 +82,13 @@ export default {
           password: 'user1'
         }
       ],
-      // 表单
+      path:"",
+        // 表单
       formLogin: {
         username: 'admin',
         password: '123456',
-        code: 'v9am'
+        code: 'v9am',
+        uuid:''
       },
       // 校验
       rules: {
@@ -100,6 +103,10 @@ export default {
         ]
       }
     }
+  },
+  created(){
+    this.formLogin.uuid=util.uuid();
+    this.path="/code/image.jpg?uuid="+this.formLogin.uuid
   },
   mounted () {
     // 初始化例子插件
@@ -140,13 +147,20 @@ export default {
           this.login({
             vm: this,
             username: this.formLogin.username,
-            password: this.formLogin.password
+            password: this.formLogin.password,
+            code:this.formLogin.code,
+            uuid:this.formLogin.uuid
           })
         } else {
           // 登录表单校验失败
           this.$message.error('表单校验失败')
         }
       })
+    },
+    //刷新验证码
+    getImageCodePath(){
+      this.formLogin.uuid=util.uuid();
+      this.path="/code/image.jpg?uuid="+this.formLogin.uuid
     }
   }
 }
