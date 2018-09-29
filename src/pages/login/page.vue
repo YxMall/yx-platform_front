@@ -38,7 +38,7 @@
       </el-button>
     </div>
     <el-dialog
-      title="快速选择用户"
+      title="短信登录"
       :visible.sync="dialogVisible"
       width="400px">
       <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">

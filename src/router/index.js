@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-
+import { Message } from 'element-ui'
 import store from '@/store/index'
 
 import util from '@/libs/util.js'
@@ -34,7 +34,21 @@ router.beforeEach((to, from, next) => {
     // 请根据自身业务需要修改
     const token = util.cookies.get('accessToken')
     if (token && token !== 'undefined') {
-      next()
+      if (store.state.d2admin.menu.header.length === 0) {
+        store.dispatch('d2admin/user/getUserInfo')
+          .then(() => {
+            router.addRoutes(store.state.d2admin.router.addRoutes)
+            next({ ...to, replace: true })
+            NProgress.done()
+          }).catch(err => {
+            console.log(err)
+            Message.error('Token失效，重新登录')
+            store.dispatch('d2admin/account/logout', { vm: router.app })
+            NProgress.done()
+          })
+      } else {
+        next()
+      }
     } else {
       // 将当前预计打开的页面完整地址临时存储 登录后继续跳转
       // 这个 cookie(redirect) 会在登录后自动删除

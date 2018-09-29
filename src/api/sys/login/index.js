@@ -11,3 +11,10 @@ export function AccountLogin (params) {
     data: qs.stringify(params)
   })
 }
+
+export function GetUserInfo () {
+  return request({
+    url: '/user/info',
+    method: 'get'
+  })
+}

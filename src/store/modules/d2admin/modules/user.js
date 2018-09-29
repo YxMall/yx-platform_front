@@ -1,5 +1,6 @@
 // 设置文件
 import setting from '@/setting.js'
+import { GetUserInfo } from '@/api/sys/login'
 
 export default {
   namespaced: true,
@@ -8,6 +9,35 @@ export default {
     info: setting.user.info
   },
   actions: {
+    /**
+     * @description 获取用户信息
+     * @param {Object} state vuex state
+     * @param {*} info info
+     */
+    getUserInfo ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        GetUserInfo()
+          .then(res => {
+            console.log(res)
+            const { menu, permission } = res
+            // 设置用户信息
+            // state.info = info
+            // 设置用户权限
+            state.permission = permission
+            // 初始化菜单
+            commit('d2admin/menu/headerSet', menu, { root: true })
+            // 初始化菜单搜索功能
+            commit('d2admin/search/init', menu, { root: true })
+            // 根据菜单初始化路由
+            commit('d2admin/router/GenerateRoutes', menu, { root: true })
+            // 用户登录后从持久化存储加载一系列的设置
+            commit('d2admin/account/load', null, { root: true })
+            resolve()
+          }).catch(err => {
+            reject(err)
+          })
+      })
+    },
     /**
      * @description 设置用户数据
      * @param {Object} state vuex state
