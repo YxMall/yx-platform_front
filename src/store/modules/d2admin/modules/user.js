@@ -15,10 +15,10 @@ export default {
      * @param {*} info info
      */
     getUserInfo ({ state, commit }) {
+      debugger
       return new Promise((resolve, reject) => {
         GetUserInfo()
           .then(res => {
-            console.log(res)
             const { menu, permission } = res
             // 设置用户信息
             // state.info = info

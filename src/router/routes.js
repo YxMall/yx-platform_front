@@ -2,11 +2,11 @@
 import layoutHeaderAside from '@/layout/header-aside'
 
 const meta = { requiresAuth: true }
-
 /**
- * 在主框架内显示
+ * 根目录
+ * 根据菜单生成的路由都在根目录下
  */
-const frameIn = [
+export const frameIn = [
   {
     path: '/',
     redirect: { name: 'index' },
@@ -43,7 +43,7 @@ const frameIn = [
 /**
  * 在主框架之外显示
  */
-const frameOut = [
+export const frameOut = [
   // 页面重定向使用 必须保留
   {
     path: '/redirect/:path*',
@@ -60,21 +60,20 @@ const frameOut = [
 /**
  * 错误页面
  */
-const errorPage = [
+export const errorPage = [
+  // 401
+  {
+    path: '/401',
+    name: '401',
+    component: () => import('@/pages/error-page/401')
+  },
   // 404
   {
     path: '*',
     name: '404',
-    component: () => import('@/pages/error-page-404')
+    component: () => import('@/pages/error-page/404')
   }
 ]
 
-// 导出需要显示菜单的
-export const frameInRoutes = frameIn
-
 // 重新组织后导出
-export default [
-  ...frameIn,
-  ...frameOut,
-  ...errorPage
-]
+export default frameOut

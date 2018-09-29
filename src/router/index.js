@@ -28,13 +28,19 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   // 关闭搜索面板
   store.commit('d2admin/search/set', false)
-  // 验证当前路由所有的匹配中是否需要有登录验证的
-  if (to.matched.some(r => r.meta.requiresAuth)) {
-    // 这里暂时将cookie里是否存有token作为验证是否登录的条件
-    // 请根据自身业务需要修改
-    const token = util.cookies.get('accessToken')
-    if (token && token !== 'undefined') {
+  // 这里暂时将cookie里是否存有token作为验证是否登录的条件
+  // 请根据自身业务需要修改
+  // 获取当前用户的 token
+  const token = util.cookies.get('token')
+  // 检验逻辑
+  if (token && token !== 'undefined') {
+    // token 存在 代表当前用户已经登陆
+    if (to.path === '/login') {
+      next('/')
+      NProgress.done()
+    } else {
       if (store.state.d2admin.menu.header.length === 0) {
+        // vuex 中不存在可以打开的页面池（一般是刚刷新）
         store.dispatch('d2admin/user/getUserInfo')
           .then(() => {
             router.addRoutes(store.state.d2admin.router.addRoutes)
@@ -49,6 +55,11 @@ router.beforeEach((to, from, next) => {
       } else {
         next()
       }
+    }
+  } else {
+    // token 不存在 代表当前用户登陆状态不合法
+    if (to.path === '/login') {
+      next()
     } else {
       // 将当前预计打开的页面完整地址临时存储 登录后继续跳转
       // 这个 cookie(redirect) 会在登录后自动删除
@@ -57,10 +68,8 @@ router.beforeEach((to, from, next) => {
       next({
         name: 'login'
       })
+      NProgress.done()
     }
-  } else {
-    // 不需要身份校验 直接通过
-    next()
   }
 })
 
@@ -68,10 +77,9 @@ router.afterEach(to => {
   // 进度条
   NProgress.done()
   // 需要的信息
-  const app = router.app
   const { name, params, query } = to
   // 多页控制 打开新的页面
-  app.$store.dispatch('d2admin/page/open', { name, params, query })
+  store.commit('d2admin/page/open', { name, params, query })
   // 更改标题
   util.title(to.meta.title)
 })

@@ -4,6 +4,7 @@ import { frameIn, errorPage } from '@/router/routes'
 const menuAside = []
 
 function generateRouter (item) {
+  debugger
   return {
     path: item.path,
     name: item.name,
@@ -43,6 +44,7 @@ export default {
   },
   mutations: {
     GenerateRoutes (state, menu) {
+      console.log(menu)
       frameIn[0].children = menu
       let addRoutes = convertRouter(frameIn)
       addRoutes.push(...errorPage)

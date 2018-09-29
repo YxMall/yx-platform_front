@@ -6,6 +6,7 @@ import theme from './modules/theme'
 import log from './modules/log'
 import account from './modules/account'
 import fullscreen from './modules/fullscreen'
+import router from './modules/router'
 import ua from './modules/ua'
 import gray from './modules/gray'
 import page from './modules/page'
@@ -24,6 +25,7 @@ export default {
     log,
     account,
     fullscreen,
+    router,
     ua,
     gray,
     page,
