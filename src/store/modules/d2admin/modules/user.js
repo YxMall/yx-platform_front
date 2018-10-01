@@ -1,7 +1,7 @@
 // 设置文件
 import setting from '@/setting.js'
 import { GetUserInfo } from '@/api/sys/login'
-
+import util from '@/libs/util'
 export default {
   namespaced: true,
   state: {
@@ -15,9 +15,8 @@ export default {
      * @param {*} info info
      */
     getUserInfo ({ state, commit }) {
-      debugger
       return new Promise((resolve, reject) => {
-        GetUserInfo()
+        GetUserInfo(util.cookies.get('accessToken'))
           .then(res => {
             const { menu, permission } = res
             // 设置用户信息
@@ -26,6 +25,8 @@ export default {
             state.permission = permission
             // 初始化菜单
             commit('d2admin/menu/headerSet', menu, { root: true })
+            // 初始化菜单
+            commit('d2admin/menu/asideSet', menu, { root: true })
             // 初始化菜单搜索功能
             commit('d2admin/search/init', menu, { root: true })
             // 根据菜单初始化路由

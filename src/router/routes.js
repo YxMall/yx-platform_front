@@ -1,7 +1,7 @@
 // layout
-import layoutHeaderAside from '@/layout/header-aside'
+// import layoutHeaderAside from '@/layout/header-aside'
 
-const meta = { requiresAuth: true }
+// const meta = { requiresAuth: true }
 /**
  * 根目录
  * 根据菜单生成的路由都在根目录下
@@ -9,34 +9,11 @@ const meta = { requiresAuth: true }
 export const frameIn = [
   {
     path: '/',
-    redirect: { name: 'index' },
-    component: layoutHeaderAside,
-    children: [
-      {
-        path: 'index',
-        name: 'index',
-        meta,
-        component: () => import('@/pages/index')
-      },
-      {
-        path: '/page1',
-        name: 'page1',
-        component: () => import('@/pages/page1'),
-        meta: { meta, title: '页面 1' }
-      },
-      {
-        path: '/page2',
-        name: 'page2',
-        component: () => import('@/pages/page2'),
-        meta: { meta, title: '页面 2' }
-      },
-      {
-        path: '/page3',
-        name: 'page3',
-        component: () => import('@/pages/page3'),
-        meta: { meta, title: '页面 3' }
-      }
-    ]
+    name: 'layout'
+  },
+  {
+    path: '/index',
+    component: () => import('@/pages/index')
   }
 ]
 

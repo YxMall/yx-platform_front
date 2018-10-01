@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
   // 这里暂时将cookie里是否存有token作为验证是否登录的条件
   // 请根据自身业务需要修改
   // 获取当前用户的 token
-  const token = util.cookies.get('token')
+  const token = util.cookies.get('accessToken')
   // 检验逻辑
   if (token && token !== 'undefined') {
     // token 存在 代表当前用户已经登陆
