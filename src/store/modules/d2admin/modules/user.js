@@ -18,9 +18,9 @@ export default {
       return new Promise((resolve, reject) => {
         GetUserInfo(util.cookies.get('accessToken'))
           .then(res => {
-            const { menu, permission } = res
+            const { info, menu, permission } = res
             // 设置用户信息
-            // state.info = info
+            state.info = info
             // 设置用户权限
             state.permission = permission
             // 初始化菜单

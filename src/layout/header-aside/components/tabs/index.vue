@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     D2Contextmenu: () => import('../contextmenu'),
@@ -89,7 +89,7 @@ export default {
     ])
   },
   methods: {
-    ...mapActions('d2admin/page', [
+    ...mapMutations('d2admin/page', [
       'close',
       'closeLeft',
       'closeRight',

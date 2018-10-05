@@ -59,7 +59,6 @@ require('particles.js')
 import config from './config/default'
 import util from '@/libs/util.js'
 import { mapActions } from 'vuex'
-import axios from 'axios'
 export default {
   data () {
     return {

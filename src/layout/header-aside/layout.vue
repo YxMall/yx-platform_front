@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import mixinSearch from './mixins/search'
 export default {
   name: 'd2-layout-header-aside',
@@ -129,14 +129,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('d2admin/menu', [
-      'asideCollapseToggle'
-    ]),
+     ...mapMutations({
+      menuAsideCollapseToggle: 'd2admin/menu/asideCollapseToggle'
+    }),
     /**
      * 接收点击切换侧边栏的按钮
      */
     handleToggleAside () {
-      this.asideCollapseToggle()
+      this.menuAsideCollapseToggle()
     }
   }
 }
