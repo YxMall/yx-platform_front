@@ -6,14 +6,20 @@ const menuAside = []
 function generateRouter (item) {
   return {
     path: item.path,
-    name: item.icon,
+    name: item.name,
     meta: {
       title: item.title
     },
-    redirect: item.children && item.children.length > 0 ? { 'name': item.children[0].icon } : '',
-    component: item.name === 'layout'
-      ? asyncRouterMap['layout']
-      : item.children && item.children.length > 0 ? asyncRouterMap['router'] : asyncRouterMap[item.icon]
+    redirect:
+      item.children && item.children.length > 0
+        ? { name: item.children[0].name }
+        : '',
+    component:
+      item.name === 'layout'
+        ? asyncRouterMap['layout']
+        : item.children && item.children.length > 0
+          ? asyncRouterMap['router']
+          : asyncRouterMap[item.name]
   }
 }
 
@@ -27,8 +33,11 @@ function convertRouter (menu) {
     menu.forEach(m => {
       // 1为后台约定的菜单
       if (m.type === 1) menuAside.push(m)
-      if (!(/^https:\/\/|http:\/\//.test(m.path)) && m.path !== undefined) {
-        debugger
+      if (
+        !/^https:\/\/|http:\/\//.test(m.path) &&
+        m.path !== undefined &&
+        m.path != null
+      ) {
         // 截取path最后的为name 不可以重复
         // m['name'] = m.path.substring(m.path.lastIndexOf('/') + 1)
         let parent = generateRouter(m)

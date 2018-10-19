@@ -41,12 +41,14 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.state.d2admin.menu.header.length === 0) {
         // vuex 中不存在可以打开的页面池（一般是刚刷新）
-        store.dispatch('d2admin/user/getUserInfo')
+        store
+          .dispatch('d2admin/user/getUserInfo')
           .then(() => {
             router.addRoutes(store.state.d2admin.router.addRoutes)
             next({ ...to, replace: true })
             NProgress.done()
-          }).catch(err => {
+          })
+          .catch(err => {
             console.log(err)
             Message.error('Token失效，重新登录')
             store.dispatch('d2admin/account/logout', { vm: router.app })

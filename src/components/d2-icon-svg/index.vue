@@ -1,5 +1,7 @@
 <template>
-  <svg aria-hidden="true">
+  <svg aria-hidden="true"
+       :width="width"
+       :height="height">
     <use :xlink:href="icon"></use>
   </svg>
 </template>
@@ -11,6 +13,14 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    width: {
+      type: String,
+      default: '1em'
+    },
+    height: {
+      type: String,
+      default: '1em'
     }
   },
   computed: {

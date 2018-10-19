@@ -10,10 +10,6 @@ export const frameIn = [
   {
     path: '/',
     name: 'layout'
-  },
-  {
-    path: '/index',
-    component: () => import('@/pages/index')
   }
 ]
 

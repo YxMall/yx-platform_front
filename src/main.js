@@ -17,6 +17,7 @@ import D2Crud from '@d2-projects/d2-crud'
 
 // 菜单和路由设置
 import router from './router'
+
 // 核心插件
 Vue.use(d2Admin)
 
