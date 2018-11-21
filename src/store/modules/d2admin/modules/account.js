@@ -12,18 +12,19 @@ export default {
      * @param {Object} param password {String} 密码
      * @param {Object} param route {Object} 登录成功后定向的路由对象
      */
-    login ({
-      commit
-    }, {
-      vm,
-      username,
-      password,
-      code,
-      uuid,
-      route = {
-        name: 'index'
+    login (
+      { commit },
+      {
+        vm,
+        username,
+        password,
+        code,
+        uuid,
+        route = {
+          name: 'index'
+        }
       }
-    }) {
+    ) {
       // 开始请求登录接口
       AccountLogin({
         username,
@@ -35,7 +36,8 @@ export default {
           // 设置 cookie 一定要存 uuid 和 token 两个 cookie
           // 整个系统依赖这两个数据进行校验和存储
           // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复
-          // token 代表用户当前登录状态 建议在网络请求中携带 token
+          // accessToken 代表用户当前登录状态 建议在网络请求中携带 token
+          // permissions 当前用户所有权限
           // 如有必要 token 需要定时更新，默认保存一天
           util.cookies.set('uuid', res.username)
           util.cookies.set('accessToken', res.accessToken)
@@ -70,7 +72,7 @@ export default {
        */
       function logout () {
         // 删除cookie
-        util.cookies.remove('token')
+        util.cookies.remove('accessToken')
         util.cookies.remove('uuid')
         // commit('d2admin/menu/init', [], { root: true })
         // 跳转路由
@@ -81,11 +83,15 @@ export default {
       // 判断是否需要确认
       if (confirm) {
         commit('d2admin/gray/set', true, { root: true })
-        vm.$confirm('注销当前账户吗?  打开的标签页和用户设置将会被保存。', '确认操作', {
-          confirmButtonText: '确定注销',
-          cancelButtonText: '放弃',
-          type: 'warning'
-        })
+        vm.$confirm(
+          '注销当前账户吗?  打开的标签页和用户设置将会被保存。',
+          '确认操作',
+          {
+            confirmButtonText: '确定注销',
+            cancelButtonText: '放弃',
+            type: 'warning'
+          }
+        )
           .then(() => {
             commit('d2admin/gray/set', false, { root: true })
             logout()

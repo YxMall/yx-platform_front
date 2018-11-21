@@ -6,7 +6,8 @@ export default {
   namespaced: true,
   state: {
     // 用户信息
-    info: setting.user.info
+    info: setting.user.info,
+    permission: setting.user.permission
   },
   actions: {
     /**
@@ -34,7 +35,8 @@ export default {
             // 用户登录后从持久化存储加载一系列的设置
             commit('d2admin/account/load', null, { root: true })
             resolve()
-          }).catch(err => {
+          })
+          .catch(err => {
             reject(err)
           })
       })
@@ -49,12 +51,16 @@ export default {
         // store 赋值
         state.info = info
         // 持久化
-        await dispatch('d2admin/db/set', {
-          dbName: 'sys',
-          path: 'user.info',
-          value: info,
-          user: true
-        }, { root: true })
+        await dispatch(
+          'd2admin/db/set',
+          {
+            dbName: 'sys',
+            path: 'user.info',
+            value: info,
+            user: true
+          },
+          { root: true }
+        )
         // end
         resolve()
       })
@@ -66,12 +72,16 @@ export default {
     load ({ state, dispatch }) {
       return new Promise(async resolve => {
         // store 赋值
-        state.info = await dispatch('d2admin/db/get', {
-          dbName: 'sys',
-          path: 'user.info',
-          defaultValue: setting.user.info,
-          user: true
-        }, { root: true })
+        state.info = await dispatch(
+          'd2admin/db/get',
+          {
+            dbName: 'sys',
+            path: 'user.info',
+            defaultValue: setting.user.info,
+            user: true
+          },
+          { root: true }
+        )
         // end
         resolve()
       })

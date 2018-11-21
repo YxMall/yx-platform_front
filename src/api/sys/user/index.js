@@ -41,7 +41,7 @@ export function checkName (params) {
  */
 export function userInfo (userId) {
   return request({
-    url: '/user/' + userId,
+    url: '/user/get/' + userId,
     method: 'get'
   })
 }
@@ -52,7 +52,7 @@ export function userInfo (userId) {
  */
 export function addUser (params) {
   return request({
-    url: '/user',
+    url: '/user/add',
     method: 'post',
     data: params
   })
@@ -64,19 +64,42 @@ export function addUser (params) {
  */
 export function updateUser (params) {
   return request({
-    url: '/user',
+    url: '/user/edit',
     method: 'put',
     data: params
   })
 }
 
 /**
- * 修改用户
+ * 删除用户
  * @param {用户信息} params
  */
 export function deleteUser (userId) {
   return request({
-    url: '/user' + userId,
+    url: '/user/delete/' + userId,
     method: 'delete'
+  })
+}
+
+/**
+ *  获取当前用户信息
+ * @param {用户Id} params
+ */
+export function getCurrentUserInfo () {
+  return request({
+    url: '/user/getCurrentUser',
+    method: 'get'
+  })
+}
+
+/**
+ * 修改用户信息
+ * @param {用户信息} params
+ */
+export function updateCurrentUser (params) {
+  return request({
+    url: '/user/updateCurrentUser',
+    method: 'put',
+    data: params
   })
 }

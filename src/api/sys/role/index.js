@@ -29,7 +29,7 @@ export function getAllRole () {
  */
 export function roleInfo (roleId) {
   return request({
-    url: '/role/' + roleId,
+    url: '/role/get/' + roleId,
     method: 'get'
   })
 }
@@ -40,7 +40,7 @@ export function roleInfo (roleId) {
  */
 export function addRole (params) {
   return request({
-    url: '/role',
+    url: '/role/add',
     method: 'post',
     data: params
   })
@@ -52,7 +52,7 @@ export function addRole (params) {
  */
 export function updateRole (params) {
   return request({
-    url: '/role',
+    url: '/role/edit',
     method: 'put',
     data: params
   })
@@ -64,7 +64,7 @@ export function updateRole (params) {
  */
 export function deleteRole (roleId) {
   return request({
-    url: '/role/' + roleId,
+    url: '/role/delete/' + roleId,
     method: 'delete'
   })
 }

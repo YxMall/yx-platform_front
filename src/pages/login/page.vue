@@ -1,50 +1,75 @@
 <template>
   <div class="login-page">
-    <div class="layer bg" id="login"></div>
+    <div class="layer bg"
+         id="login"></div>
     <div class="layer flex-center">
       <!-- logo部分 -->
       <div class="logo-group">
-        <img src="./image/logo.png" alt="logo">
+        <img src="./image/logo.png"
+             alt="logo">
       </div>
       <!-- 表单部分 -->
       <div class="form-group">
         <el-card>
-          <el-form ref="loginForm" label-position="top" :rules="rules" :model="formLogin" size="default">
-            <el-form-item  prop="username">
-              <el-input type="text" v-model="formLogin.username" placeholder="用户名">
-                <i slot="prepend" class="fa fa-user-circle-o"></i>
+          <el-form ref="loginForm"
+                   label-position="top"
+                   :rules="rules"
+                   :model="formLogin"
+                   size="default">
+            <el-form-item prop="username">
+              <el-input type="text"
+                        v-model="formLogin.username"
+                        placeholder="用户名">
+                <i slot="prepend"
+                   class="fa fa-user-circle-o"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input type="password" v-model="formLogin.password" placeholder="密码">
-                <i slot="prepend" class="fa fa-keyboard-o"></i>
+              <el-input type="password"
+                        v-model="formLogin.password"
+                        placeholder="密码">
+                <i slot="prepend"
+                   class="fa fa-keyboard-o"></i>
               </el-input>
             </el-form-item>
             <el-form-item prop="code">
-              <el-input type="text" v-model="formLogin.code" placeholder="- - - -">
+              <el-input type="text"
+                        v-model="formLogin.code"
+                        placeholder="- - - -">
                 <template slot="prepend">验证码</template>
                 <template slot="append">
-                  <img class="login-code" :src="path" @click="getImageCodePath">
+                  <img class="login-code"
+                       :src="path"
+                       @click="getImageCodePath">
                 </template>
               </el-input>
             </el-form-item>
-            <el-button size="default" @click="submit" type="primary" class="button-login">登录</el-button>
+            <el-button size="default"
+                       @click="submit"
+                       type="primary"
+                       class="button-login">登录</el-button>
           </el-form>
         </el-card>
       </div>
       <!-- 快速登录按钮 -->
-      <el-button size="default" type="info" class="button-help" @click="dialogVisible = true">
-          短信登录
+      <el-button size="default"
+                 type="info"
+                 class="button-help"
+                 @click="dialogVisible = true">
+        短信登录
       </el-button>
     </div>
-    <el-dialog
-      title="短信登录"
-      :visible.sync="dialogVisible"
-      width="400px">
-      <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
-        <el-col v-for="(user, index) in users" :key="index" :span="8">
-          <div class="user-btn" @click="handleUserBtnClick(user)">
-            <d2-icon name="user-circle-o"/>
+    <el-dialog title="短信登录"
+               :visible.sync="dialogVisible"
+               width="400px">
+      <el-row :gutter="10"
+              style="margin: -20px 0px -10px 0px;">
+        <el-col v-for="(user, index) in users"
+                :key="index"
+                :span="8">
+          <div class="user-btn"
+               @click="handleUserBtnClick(user)">
+            <d2-icon name="user-circle-o" />
             <span>{{user.name}}</span>
           </div>
         </el-col>
@@ -81,13 +106,13 @@ export default {
           password: 'user1'
         }
       ],
-      path:"",
-        // 表单
+      path: "",
+      // 表单
       formLogin: {
         username: 'admin',
         password: '123456',
         code: 'v9am',
-        uuid:''
+        uuid: ''
       },
       // 校验
       rules: {
@@ -103,9 +128,8 @@ export default {
       }
     }
   },
-  created(){
-    this.formLogin.uuid=util.uuid();
-    this.path="/code/image.jpg?uuid="+this.formLogin.uuid
+  created () {
+    this.getImageCodePath();
   },
   mounted () {
     // 初始化例子插件
@@ -147,8 +171,8 @@ export default {
             vm: this,
             username: this.formLogin.username,
             password: this.formLogin.password,
-            code:this.formLogin.code,
-            uuid:this.formLogin.uuid
+            code: this.formLogin.code,
+            uuid: this.formLogin.uuid
           })
         } else {
           // 登录表单校验失败
@@ -157,9 +181,9 @@ export default {
       })
     },
     //刷新验证码
-    getImageCodePath(){
-      this.formLogin.uuid=util.uuid();
-      this.path="/code/image.jpg?uuid="+this.formLogin.uuid
+    getImageCodePath () {
+      this.formLogin.uuid = util.uuid();
+      this.path = process.env.VUE_APP_API + "code/image.jpg?uuid=" + this.formLogin.uuid
     }
   }
 }

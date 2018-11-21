@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="!userItem.userId? '新增' : '修改'"
+  <el-dialog title="用户信息修改"
              :visible.sync="userFormVisible">
     <el-form ref="userForm"
              :rules="userFormRules"
@@ -47,13 +47,6 @@
           <el-radio :label="false">女 </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label='状态'
-                    prop='status'>
-        <el-radio-group v-model="userItem.status">
-          <el-radio :label="true">启用</el-radio>
-          <el-radio :label="false">禁用</el-radio>
-        </el-radio-group>
-      </el-form-item>
       <el-form-item label='邮箱'
                     prop='email'>
         <el-input clearable
@@ -65,19 +58,6 @@
         <el-input clearable
                   autocomplete='off'
                   v-model='userItem.mobile' />
-      </el-form-item>
-      <el-form-item label='角色'
-                    prop='roleIds'>
-        <el-select v-model="userItem.roleIds"
-                   multiple
-                   style="width:100%"
-                   placeholder="请选择">
-          <el-option v-for="item in roleList"
-                     :key="item.roleId"
-                     :label="item.roleName"
-                     :value="item.roleId">
-          </el-option>
-        </el-select>
       </el-form-item>
     </el-form>
     <span slot="footer"
@@ -102,10 +82,9 @@
 <script>
 import avatarUpload from 'vue-image-crop-upload';
 import util from '@/libs/util'
-import { getAllRole } from '@/api/sys/role';
-import { addUser, updateUser, userInfo, checkName } from '@/api/sys/user';
+import { updateCurrentUser, getCurrentUserInfo, checkName } from '@/api/sys/user';
 export default {
-  name: 'userForm',
+  name: 'edit-user',
   components: {
     'avatar-upload': avatarUpload
   },
@@ -132,8 +111,6 @@ export default {
       headers: {
         accessToken: util.cookies.get('accessToken')
       },
-      keys: '',
-      roleList: [],
       userFormVisible: true,
       userItem: {
         userId: 0,
@@ -143,9 +120,7 @@ export default {
         password: '',
         email: '',
         mobile: '',
-        gender: true,
-        status: true,
-        roleIds: []
+        gender: true
       },
       userFormRules: {
         password: [
@@ -169,51 +144,25 @@ export default {
     /**
      * 初始化表单
      */
-    initForm (userId) {
-      // 先清除表单信息
-      this.userItem.userId = userId || 0
-      getAllRole().then(res => {
-        this.roleList = res
-        this.userFormVisible = true
-        this.$nextTick(() => {
-          this.$refs['userForm'].resetFields()
-        })
-      }).then(() => {
-        // 修改
-        if (this.userItem.userId !== 0) {
-          userInfo(userId).then(res => {
-            this.userItem = res.user
-            this.userItem.roleIds = res.roleIds
-          })
-        }
+    initForm () {
+      getCurrentUserInfo().then(res => {
+        this.userItem = res;
       })
+      this.userFormVisible = true;
     },
     /**
      * 提交菜单
      */
     submitUserFormHandle () {
       this.$refs['userForm'].validate((valid) => {
-        // 获取选中的菜单
         if (valid) {
-          if (this.userItem.userId !== 0) {
-            updateUser(this.userItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
-              this.userFormVisible = false;
-              this.$emit('refreshDataList')
-            })
-          } else {
-            addUser(this.userItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
-              this.userFormVisible = false;
-              this.$emit('refreshDataList')
-            })
-          }
+          updateCurrentUser(this.userItem).then(res => {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            });
+            this.userFormVisible = false;
+          })
         } else {
           return false;
         }

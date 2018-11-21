@@ -1,18 +1,23 @@
 <template>
   <div class="d2-layout-header-aside-menu-side">
-    <el-menu
-      :collapse="asideCollapse"
-      :unique-opened="true"
-      :default-active="active"
-      ref="menu"
-      @select="handleMenuSelect">
+    <el-menu :collapse="asideCollapse"
+             :unique-opened="true"
+             :default-active="active"
+             ref="menu"
+             @select="handleMenuSelect">
       <template v-for="(menu, menuIndex) in aside">
-        <d2-layout-header-aside-menu-item v-if="menu.children === undefined" :menu="menu" :key="menuIndex"/>
-        <d2-layout-header-aside-menu-sub v-else :menu="menu" :key="menuIndex"/>
+        <d2-layout-header-aside-menu-item v-if="menu.children === undefined"
+                                          :menu="menu"
+                                          :key="menuIndex" />
+        <d2-layout-header-aside-menu-sub v-else
+                                         :menu="menu"
+                                         :key="menuIndex" />
       </template>
     </el-menu>
-    <div v-if="aside.length === 0 && !asideCollapse" class="d2-layout-header-aside-menu-empty" flex="dir:top main:center cross:center">
-      <d2-icon name="inbox"/>
+    <div v-if="aside.length === 0 && !asideCollapse"
+         class="d2-layout-header-aside-menu-empty"
+         flex="dir:top main:center cross:center">
+      <d2-icon name="inbox" />
       <span>没有侧栏菜单</span>
     </div>
   </div>
@@ -60,7 +65,9 @@ export default {
         this.active = val[val.length - 1].path
         this.$nextTick(() => {
           if (this.aside.length > 0) {
-            this.$refs.menu.activeIndex = this.active
+            if (this.aside.length > 0 && this.$refs.menu) {
+              this.$refs.menu.activeIndex = this.active
+            }
           }
         })
       },

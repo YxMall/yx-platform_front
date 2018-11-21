@@ -12,6 +12,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
+                     v-show="isAuth('sys:menu:list')"
                      @click="getMenuData">
             <d2-icon name="search" />
             查询
@@ -26,6 +27,7 @@
       </el-form>
       <el-button-group>
         <el-button type="primary"
+                   v-show="isAuth('sys:menu:add')"
                    @click="addOrUpdateHandle(0)">
           <d2-icon name="plus" />
           添加
@@ -102,11 +104,13 @@
         <template slot-scope="scope">
           <el-button size="small"
                      type="primary"
+                     v-show="isAuth('sys:menu:update')"
                      @click="addOrUpdateHandle(scope.row.menuId)">
             <d2-icon name='edit' />
             修改</el-button>
           <el-button size="small"
                      type="danger"
+                     v-show="isAuth('sys:menu:delete')"
                      @click="deleteMenuHandle(scope.row.menuId)">
             <d2-icon name='trash' />
             删除</el-button>
@@ -118,7 +122,6 @@
                ref="menuForm"></menu-form>
   </d2-container>
 </template>
-
 
 <script>
 import menuForm from './menu-form';
@@ -132,7 +135,7 @@ export default {
     return {
       menuName: '',
       dataList: [],
-      menuFormVisible: false,
+      menuFormVisible: fa
     };
   },
   mounted () {

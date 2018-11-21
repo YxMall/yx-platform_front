@@ -1,3 +1,3 @@
 <template>
-  <d2-container-frame src='http://localhost:8088/swagger-ui.html' />
+  <d2-container-frame src='/swagger-ui.html' />
 </template>

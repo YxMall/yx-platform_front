@@ -8,8 +8,7 @@
         <el-form-item label="状态"
                       prop="status">
           <el-select v-model="params.status"
-                     placeholder="状态选择"
-                     style="width: 100px;">
+                     placeholder="状态选择">
             <el-option label="全部"
                        value="" />
             <el-option label="启动"
@@ -23,11 +22,11 @@
                       prop="username">
           <el-input v-model="params.username"
                     clearable
-                    placeholder="用户"
-                    style="width: 100px;" />
+                    placeholder="用户" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
+                     v-show="isAuth('sys:user:list')"
                      @click="handleFormSubmit">
             <d2-icon name="search" />
             查询
@@ -43,6 +42,7 @@
       </el-form>
       <el-button-group>
         <el-button type="primary"
+                   v-show="isAuth('sys:user:add')"
                    @click="addOrUpdateHandle(0)">
           <d2-icon name="plus" />
           添加
@@ -120,31 +120,30 @@
                        label="操作">
         <template slot-scope="scope">
           <el-button size="small"
-                     type="success"
-                     @click="addOrUpdateHandle(scope.row.roleId)">
-            <d2-icon name='edit' />
-            更换头像</el-button>
-          <el-button size="small"
                      type="primary"
+                     v-show="isAuth('sys:user:update')"
                      @click="addOrUpdateHandle(scope.row.userId)">
             <d2-icon name='edit' />
             修改</el-button>
           <el-button size="small"
                      type="danger"
+                     v-show="isAuth('sys:user:delete')"
                      @click="deleteUserHandle(scope.row.userId)">
             <d2-icon name='trash' />
             删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination @size-change="handleSizeChange"
-                   @current-change="handleCurrentChange"
-                   :current-page="params.currPage"
-                   :page-sizes="[10, 20, 30, 40]"
-                   :page-size="10"
-                   layout="total, sizes, prev, pager, next, jumper"
-                   :total="params.totalCount">
-    </el-pagination>
+    <template slot="footer">
+      <el-pagination @size-change="handleSizeChange"
+                     @current-change="handleCurrentChange"
+                     :current-page="params.currPage"
+                     :page-sizes="[10, 20, 30, 40]"
+                     :page-size="10"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="params.totalCount">
+      </el-pagination>
+    </template>
     <user-form v-if="userFormVisible"
                @refreshDataList='getUserTableData'
                ref="userForm">
@@ -220,7 +219,9 @@ export default {
         this.$refs.userForm.initForm(userId)
       })
     },
-    //删除用户
+    /**
+     * 删除用户
+     */
     deleteUserHandle (userId) {
       this.$confirm('此操作将永久ID为[' + userId + ']用户删除, 是否继续?', '提示', {
         confirmButtonText: '确定',

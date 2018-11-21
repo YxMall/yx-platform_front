@@ -60,7 +60,7 @@ export default {
       menuListTreeProps: {
         label: 'title',
         children: 'children'
-      },
+      }
     };
   },
   methods: {
@@ -68,7 +68,7 @@ export default {
      * 初始化表单
      */
     initForm (roleId) {
-      //先清除表单信息
+      // 先清除表单信息
       this.roleItem.roleId = roleId || 0
       getMenuList().then(res => {
         this.menuTreeData = res;
@@ -77,8 +77,8 @@ export default {
           this.$refs['roleForm'].resetFields()
         })
       }).then(() => {
-        //修改
-        if (this.roleItem.roleId != 0) {
+        // 修改
+        if (this.roleItem.roleId !== 0) {
           roleInfo(roleId).then(res => {
             this.roleItem = res.role;
             this.keys = res.menuIds;
@@ -90,12 +90,11 @@ export default {
      * 提交菜单
      */
     submitRoleFormHandle () {
-
       this.$refs['roleForm'].validate((valid) => {
-        //获取选中的菜单
+        // 获取选中的菜单
         this.roleItem.menuIds = this.$refs.menuTree.getCheckedKeys();
         if (valid) {
-          if (this.roleItem.roleId != 0) {
+          if (this.roleItem.roleId !== 0) {
             updateRole(this.roleItem).then(res => {
               this.$message({
                 message: res.msg,
@@ -111,6 +110,7 @@ export default {
                 type: 'success'
               });
               this.roleFormVisible = false;
+              this.$emit('refreshDataList')
             })
           }
         } else {

@@ -73,8 +73,11 @@ const setting = {
   // 在读取持久化数据失败时默认用户信息
   user: {
     info: {
-      username: 'Ghost'
-    }
+      username: 'Ghost',
+      avatar:
+        'https://superadmin.oss-cn-beijing.aliyuncs.com/file/20181102/71c4e2e0be0f43518ac62be86a0a2911.png'
+    },
+    permission: []
   }
 }
 

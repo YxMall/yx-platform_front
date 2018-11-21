@@ -43,13 +43,11 @@
         </el-popover>
       </el-form-item>
       <el-form-item label='请求地址'
-                    prop='path'
-                    v-if='menuItem.type!==2'>
+                    prop='path'>
         <el-input v-model='menuItem.path' />
       </el-form-item>
       <el-form-item label='权限标识'
-                    prop='perms'
-                    v-if='menuItem.type===2'>
+                    prop='perms'>
         <el-input v-model='menuItem.perms' />
       </el-form-item>
       <el-form-item label='图标'
@@ -106,15 +104,15 @@ export default {
       menuListTreeProps: {
         label: 'title',
         children: 'children'
-      },
-    };
+      }
+    }
   },
   methods: {
     /**
      * 初始化表单
      */
     initForm (id) {
-      //先清除表单信息
+      // 先清除表单信息
       this.menuItem.menuId = id || 0
       getMenuList().then(res => {
         this.menuTreeData = [{ 'menuId': '0', 'title': '菜单', 'children': res, 'parentId': '-1' }]
@@ -123,8 +121,8 @@ export default {
           this.$refs['menuForm'].resetFields()
         })
       }).then(() => {
-        //修改
-        if (this.menuItem.menuId != 0) {
+        // 修改
+        if (this.menuItem.menuId !== 0) {
           menuInfo(id).then(res => {
             this.menuItem = res;
             this.menuTreeSetCurrentNode()
@@ -149,10 +147,9 @@ export default {
      * 提交菜单
      */
     submitMenuFormHandle () {
-
       this.$refs['menuForm'].validate((valid) => {
         if (valid) {
-          if (this.menuItem.menuId != 0) {
+          if (this.menuItem.menuId !== 0) {
             updateMemu(this.menuItem).then(res => {
               this.$message({
                 message: res.msg,
@@ -171,7 +168,6 @@ export default {
               this.$emit('refreshDataList')
             })
           }
-
         } else {
           return false;
         }

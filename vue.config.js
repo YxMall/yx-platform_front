@@ -6,9 +6,7 @@ function resolve (dir) {
 }
 
 // 基础路径 注意发布之前要先修改这里
-let baseUrl = '/yx-platform_front_html/'
-// 演示项目自动构建使用
-if (process.env.VUE_APP_TRAVIS === 'TRUE') baseUrl = '/d2-admin-start-kit/'
+let baseUrl = '/'
 
 module.exports = {
   baseUrl: baseUrl, // 根据你的实际情况更改这里
@@ -26,8 +24,7 @@ module.exports = {
   // 默认设置: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config/base.js
   chainWebpack: config => {
     // 解决 cli3 热更新失效 https://github.com/vuejs/vue-cli/issues/1559
-    config.resolve
-      .symlinks(true)
+    config.resolve.symlinks(true)
     // markdown
     config.module
       .rule('md')
@@ -45,8 +42,7 @@ module.exports = {
     // svg
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
-    svgRule
-      .include
+    svgRule.include
       .add(resolve('src/assets/svg-icons/icons'))
       .end()
       .use('svg-sprite-loader')
@@ -59,16 +55,12 @@ module.exports = {
     const imagesRule = config.module.rule('images')
     imagesRule
       .test(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/)
-      .exclude
-      .add(resolve('src/assets/svg-icons/icons'))
+      .exclude.add(resolve('src/assets/svg-icons/icons'))
       .end()
     // 重新设置 alias
-    config.resolve.alias
-      .set('@', resolve('src'))
+    config.resolve.alias.set('@', resolve('src'))
     // babel-polyfill 加入 entry
     const entry = config.entry('app')
-    entry
-      .add('babel-polyfill')
-      .end()
+    entry.add('babel-polyfill').end()
   }
 }
