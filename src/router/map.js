@@ -8,6 +8,7 @@ export default {
   config: () => import('@/pages/sys/config'),
   upload: () => import('@/pages/sys/upload'),
   demo: () => import('@/pages/sys/demo'),
-  test: () => import('@/pages/test/simple-test'),
-  apiDoc: () => import('@/pages/sys/api-doc')
+  apiDoc: () => import('@/pages/sys/api-doc'),
+  notify: () => import('@/pages/oa/notify'),
+  notifyRecord: () => import('@/pages/oa/notify-record')
 }

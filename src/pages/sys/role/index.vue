@@ -13,6 +13,7 @@
         <el-form-item>
           <el-button type="primary"
                      v-show="isAuth('sys:role:list')"
+                     @keyup.enter.native="getRoleTableData"
                      @click="getRoleTableData">
             <d2-icon name="search" />
             查询

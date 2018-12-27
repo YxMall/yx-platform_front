@@ -1,5 +1,5 @@
 import asyncRouterMap from '@/router/map'
-import { frameIn, errorPage } from '@/router/routes'
+import { frameIn, errorPage, notDynamicFrameIn } from '@/router/routes'
 
 const menuAside = []
 
@@ -38,8 +38,6 @@ function convertRouter (menu) {
         m.path !== undefined &&
         m.path != null
       ) {
-        // 截取path最后的为name 不可以重复
-        // m['name'] = m.path.substring(m.path.lastIndexOf('/') + 1)
         let parent = generateRouter(m)
         if (m.children) {
           parent.children = convertRouter(m.children)
@@ -61,6 +59,8 @@ export default {
       frameIn[0].children = menu
       let addRoutes = convertRouter(frameIn)
       addRoutes.push(...errorPage)
+      // 添加非动态的路由
+      addRoutes[0].children.push(...notDynamicFrameIn)
       state.addRoutes = addRoutes
       // 设置侧栏菜单数组
       this.commit('d2admin/menu/menuAsideSet', menuAside)

@@ -14,6 +14,19 @@ export const frameIn = [
 ]
 
 /**
+ * 非后台动态生成的菜单 但是也需要添加到框架路由
+ */
+export const notDynamicFrameIn = [
+  // 消息详情
+  {
+    title: '消息详情',
+    path: '/notify/detail/:id',
+    name: 'notifyDetail',
+    component: () => import('@/pages/oa/notify-record/notify-detail')
+  }
+]
+
+/**
  * 在主框架之外显示
  */
 export const frameOut = [

@@ -60,7 +60,8 @@
                        width="150"
                        label="图标">
         <template slot-scope="scope">
-          <d2-icon-svg :name="scope.row.icon || ''"> </d2-icon-svg>
+          <d2-icon :name="scope.row.icon || ''">
+          </d2-icon>
         </template>
       </el-table-column>
       <el-table-column prop="type"
@@ -135,7 +136,7 @@ export default {
     return {
       menuName: '',
       dataList: [],
-      menuFormVisible: fa
+      menuFormVisible: false
     };
   },
   mounted () {

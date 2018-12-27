@@ -36,6 +36,7 @@
           <d2-header-error-log />
           <d2-header-fullscreen />
           <d2-header-theme />
+          <header-notify />
           <d2-header-size />
           <d2-header-user />
         </div>
@@ -95,9 +96,7 @@
 </template>
 
 <script>
-import util from '@/libs/util'
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import mixinSearch from './mixins/search'
 export default {
@@ -113,6 +112,7 @@ export default {
     'd2-header-search': () => import('./components/header-search'),
     'd2-header-size': () => import('./components/header-size'),
     'd2-header-theme': () => import('./components/header-theme'),
+    'header-notify': () => import('./components/header-notify'),
     'd2-header-user': () => import('./components/header-user'),
     'd2-header-error-log': () => import('./components/header-error-log')
   },
@@ -121,9 +121,7 @@ export default {
       // [侧边栏宽度] 正常状态
       asideWidth: '200px',
       // [侧边栏宽度] 折叠状态
-      asideWidthCollapse: '65px',
-      stompClient: '',
-      timer: ''
+      asideWidthCollapse: '65px'
     }
   },
   computed: {
@@ -147,14 +145,6 @@ export default {
       }
     }
   },
-  created () {
-    this.initWebSocket();
-  },
-  beforeDestroy: function () {
-    // 页面离开时断开连接,清除定时器
-    this.disconnect();
-    clearInterval(this.timer);
-  },
   methods: {
     ...mapMutations({
       menuAsideCollapseToggle: 'd2admin/menu/asideCollapseToggle'
@@ -164,57 +154,12 @@ export default {
      */
     handleToggleAside () {
       this.menuAsideCollapseToggle()
-    },
-    initWebSocket () {
-      this.connection();
-      let that = this;
-      // 断开重连机制,尝试发送消息,捕获异常发生时重连
-      this.timer = setInterval(() => {
-        try {
-          that.stompClient.send("test");
-        } catch (err) {
-          console.log("断线了: " + err);
-          that.connection();
-        }
-      }, 5000);
-    },
-    connection () {
-      // 建立连接对象
-      let socket = new SockJS('/endpointChat');
-      // 获取STOMP子协议的客户端对象
-      this.stompClient = Stomp.over(socket);
-      // 定义客户端的认证信息,按需求配置
-      let headers = {
-        accessToken: util.cookies.get('accessToken')
-      }
-      // 向服务器发起websocket连接
-      this.stompClient.connect(headers, () => {
-        this.stompClient.subscribe('/topic/public', (msg) => {
-          // 订阅服务端提供的某个topic
-          console.log('广播成功')
-          console.log(msg);  // msg.body存放的是服务端发送给我们的信息
-        }, headers);
-        this.stompClient.send("/app/chat.addUser",
-          headers,
-          JSON.stringify({ sender: '', chatType: 'JOIN' }),
-        )   //用户加入接口
-      }, (err) => {
-        // 连接发生错误时的处理函数
-        console.log('失败')
-        console.log(err);
-      });
-    },
-    disconnect () {
-      if (this.stompClient) {
-        this.stompClient.disconnect();
-      }
-    },  // 断开连接
-
+    }
   }
 }
 </script>
 
 <style lang="scss">
 // 注册主题
-@import '~@/assets/style/theme/register.scss';
+@import "~@/assets/style/theme/register.scss";
 </style>
