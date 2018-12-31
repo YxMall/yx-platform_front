@@ -64,7 +64,7 @@ export function addUser (params) {
  */
 export function updateUser (params) {
   return request({
-    url: '/user/edit',
+    url: '/user/update',
     method: 'put',
     data: params
   })

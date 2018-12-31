@@ -48,7 +48,7 @@ export function addConfig (params) {
  */
 export function updateConfig (params) {
   return request({
-    url: '/config/edit',
+    url: '/config/update',
     method: 'put',
     data: params
   })

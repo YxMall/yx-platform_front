@@ -197,19 +197,13 @@ export default {
         if (valid) {
           if (this.userItem.userId !== 0) {
             updateUser(this.userItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isUpdateSuccess(res)
               this.userFormVisible = false;
               this.$emit('refreshDataList')
             })
           } else {
             addUser(this.userItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isAddSuccess(res)
               this.userFormVisible = false;
               this.$emit('refreshDataList')
             })

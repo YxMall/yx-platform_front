@@ -96,19 +96,13 @@ export default {
         if (valid) {
           if (this.roleItem.roleId !== 0) {
             updateRole(this.roleItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isUpdateSuccess(res)
               this.roleFormVisible = false;
               this.$emit('refreshDataList')
             })
           } else {
             addRole(this.roleItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isAddSuccess(res)
               this.roleFormVisible = false;
               this.$emit('refreshDataList')
             })

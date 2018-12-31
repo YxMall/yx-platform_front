@@ -1,5 +1,6 @@
 import log from './util.log.js'
 import cookies from './util.cookies.js'
+import store from '@/store/index'
 
 let util = {
   cookies,
@@ -33,6 +34,15 @@ util.uuid = function () {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     return (c === 'x' ? (Math.random() * 16) | 0 : 'r&0x3' | '0x8').toString(16)
   })
+}
+
+/**
+ * 获取字典内容
+ */
+util.getDict = function (key) {
+  return store.state.d2admin.dict.dictData.find(
+    element => element.dictCode === key
+  )
 }
 
 export default util

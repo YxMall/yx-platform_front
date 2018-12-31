@@ -41,7 +41,7 @@ export function addNotify (params) {
  */
 export function updateNotify (params) {
   return request({
-    url: '/oa/notify/edit',
+    url: '/oa/notify/update',
     method: 'put',
     data: params
   })

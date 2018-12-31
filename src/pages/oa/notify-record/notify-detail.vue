@@ -17,7 +17,7 @@
         <el-tag>发送者： <span style="font-weight:bold;font-size:16px"
                 v-text="record.createUserName"></span>
         </el-tag>
-        <el-tag class="d2-ml-20	">发送时间： <span v-text="record.createTime"
+        <el-tag class="d2-ml-20">发送时间：<span v-text="record.createTime"
                 style="font-weight:bold;font-size:16px"></span>
         </el-tag>
       </div>
@@ -45,7 +45,6 @@ export default {
   },
   created () {
     this.record.id = this.$route.params.id
-
     this.handleNotifyDetail()
   },
   methods: {
@@ -53,7 +52,7 @@ export default {
      * 标记已读
      */
     handleTagReadStatus () {
-      let updateRecordData = { "readStatus": true, "readDate": new Date().getTime(), "recordsId": [this.record.id] }
+      let updateRecordData = { 'readStatus': true, 'readDate': new Date().getTime(), 'recordsId': [this.record.id] }
       updateRecord(updateRecordData).then((res) => {
         console.log(res)
       })

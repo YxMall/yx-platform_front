@@ -9,6 +9,16 @@ export default {
   upload: () => import('@/pages/sys/upload'),
   demo: () => import('@/pages/sys/demo'),
   apiDoc: () => import('@/pages/sys/api-doc'),
+  dictIndex: () => import('@/pages/sys/dict-index'),
   notify: () => import('@/pages/oa/notify'),
   notifyRecord: () => import('@/pages/oa/notify-record')
 }
+
+// import common from './routes/common'
+// import sys from './routes/sys'
+// import oa from './routes/oa'
+// export default {
+//   common,
+//   sys,
+//   oa
+// }

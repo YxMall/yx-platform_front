@@ -70,7 +70,7 @@ export default {
       notifyItem: {
         id: 0,
         subscribeType: 'all',
-        //接收消息用户ID
+        // 接收消息用户ID
         notifyUserIds: [],
         title: '',
         content: '',
@@ -108,7 +108,7 @@ export default {
       this.notifyItem.notifyUserIds = []
       this.notifyFormVisible = true
     },
-    //获取选中的用户列表
+    // 获取选中的用户列表
     getSelectionUserList () {
       this.selectUserData = this.$refs.userTable.multipleSelection;
     },
@@ -116,7 +116,7 @@ export default {
      * 选择框值发生改变
      */
     subscribeTypeChangeHandle (label) {
-      this.userTableVisible = label == 'user';
+      this.userTableVisible = label === 'user';
     },
     /**
      * 提交菜单
@@ -124,23 +124,17 @@ export default {
     submitNotifyFormHandle () {
       this.$refs['notifyForm'].validate((valid) => {
         if (valid) {
-          //获取选中发送的用户
+          // 获取选中发送的用户
           this.notifyItem.notifyUserIds = this.$refs.userTable.getSelectionUserIds();
           if (this.notifyItem.id !== 0) {
             updateNotify(this.notifyItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isUpdateSuccess(res)
               this.notifyFormVisible = false;
               this.$emit('refreshDataList')
             })
           } else {
             addNotify(this.notifyItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isAddSuccess(res)
               this.notifyFormVisible = false;
               this.$emit('refreshDataList')
             })

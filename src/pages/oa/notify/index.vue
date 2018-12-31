@@ -177,10 +177,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteNotify(id).then(res => {
-          this.$message({
-            message: res.msg,
-            type: 'success'
-          });
+          this.msgUtil.isAddSuccess(res)
           this.getNotifyTableData();
         })
       })

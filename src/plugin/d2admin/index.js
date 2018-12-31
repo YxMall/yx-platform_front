@@ -9,6 +9,7 @@ import store from '@/store/index'
 import '@/components'
 // svg 图标
 import '@/assets/svg-icons'
+
 // 功能插件
 import pluginError from '@/plugin/error'
 import pluginLog from '@/plugin/log'

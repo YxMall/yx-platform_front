@@ -79,9 +79,10 @@ router.afterEach(to => {
   // 进度条
   NProgress.done()
   // 需要的信息
+  const app = router.app
   const { name, params, query } = to
   // 多页控制 打开新的页面
-  store.commit('d2admin/page/open', { name, params, query })
+  app.$store.dispatch('d2admin/page/open', { name, params, query })
   // 更改标题
   util.title(to.meta.title)
 })

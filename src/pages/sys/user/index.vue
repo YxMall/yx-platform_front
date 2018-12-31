@@ -229,10 +229,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUser(userId).then(res => {
-          this.$message({
-            message: res.msg,
-            type: 'success'
-          });
+          this.msgUtil.isDelSuccess(res)
           this.getUserTableData();
         })
       })

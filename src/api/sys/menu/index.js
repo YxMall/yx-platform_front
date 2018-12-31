@@ -38,7 +38,7 @@ export function updateMemu (params) {
   // chirld不需要提交 先删除
   delete params.children
   return request({
-    url: '/menu/edit',
+    url: '/menu/update',
     method: 'put',
     data: params
   })

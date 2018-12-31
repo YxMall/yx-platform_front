@@ -1,16 +1,16 @@
 <template>
   <div>
-    <el-tooltip effect="dark"
-                content="通知"
-                placement="bottom">
-      <router-link to="/oa/notifyrecord">
-        <el-button class="d2-ml-0 d2-mr btn-text can-hover"
-                   type="text"
-                   @click="dialogVisible = true">
-          <el-badge :value="unReadMsgCount"
-                    class="item">
-            <d2-icon name="bell-o"
-                     style="font-size: 16px" />
+    <el-tooltip effect='dark'
+                content='通知'
+                placement='bottom'>
+      <router-link to='/oa/notifyrecord'>
+        <el-button class='d2-ml-0 d2-mr btn-text can-hover'
+                   type='text'
+                   @click='dialogVisible = true'>
+          <el-badge :value='unReadMsgCount'
+                    class='item'>
+            <d2-icon name='bell-o'
+                     style='font-size: 16px' />
           </el-badge>
         </el-button>
       </router-link>
@@ -25,8 +25,7 @@ import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import { mapState, mapActions } from 'vuex'
 export default {
-  components: {
-  },
+  name: 'headerNotify',
   data () {
     return {
       unReadMsgCount: 0,
@@ -66,9 +65,9 @@ export default {
       //断开重连机制, 尝试发送消息, 捕获异常发生时重连
       this.timer = setInterval(() => {
         try {
-          that.stompClient.send("test");
+          that.stompClient.send('test');
         } catch (err) {
-          console.log("断线了: " + err);
+          console.log('断线了: ' + err);
           that.connection();
         }
       }, 5000);
@@ -102,10 +101,10 @@ export default {
             message: JSON.parse(res.body).title
           });
         }, headers);
-        this.stompClient.send("/app/chat.addUser",
+        this.stompClient.send('/app/chat.addUser',
           headers,
           JSON.stringify({ sender: '', chatType: 'JOIN' }),
-        )   //用户加入接口
+        )   // 用户加入接口
       }, (err) => {
         // 连接发生错误时的处理函数
         console.log('失败')

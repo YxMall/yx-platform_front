@@ -52,7 +52,7 @@ export function addRole (params) {
  */
 export function updateRole (params) {
   return request({
-    url: '/role/edit',
+    url: '/role/update',
     method: 'put',
     data: params
   })

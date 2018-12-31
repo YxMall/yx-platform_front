@@ -13,7 +13,7 @@ export default {
      * @param {Object} param route {Object} 登录成功后定向的路由对象
      */
     login (
-      { commit },
+      { dispatch, commit },
       {
         vm,
         username,
@@ -32,7 +32,7 @@ export default {
         code,
         uuid
       })
-        .then(res => {
+        .then(async res => {
           // 设置 cookie 一定要存 uuid 和 token 两个 cookie
           // 整个系统依赖这两个数据进行校验和存储
           // uuid 是用户身份唯一标识 用户注册的时候确定 并且不可改变 不可重复
@@ -41,12 +41,18 @@ export default {
           // 如有必要 token 需要定时更新，默认保存一天
           util.cookies.set('uuid', res.username)
           util.cookies.set('accessToken', res.accessToken)
-          // 设置 vuex 用户信息
-          // commit('d2admin/user/set', {
-          //   name: res.name
-          // }, { root: true })
+          // // 设置 vuex 用户信息
+          // await dispatch(
+          //   'd2admin/user/set',
+          //   {
+          //     name: res.name
+          //   },
+          //   { root: true }
+          // )
           // 用户登录后从持久化数据加载一系列的设置
-          commit('load')
+          await dispatch('load')
+          // 获取数据字典内容
+          commit('d2admin/dict/setDictData', null, { root: true })
           // 更新路由 尝试去获取 cookie 里保存的需要重定向的页面完整地址
           const path = util.cookies.get('redirect')
           // 根据是否存有重定向页面判断如何重定向
@@ -103,26 +109,31 @@ export default {
       } else {
         logout()
       }
-    }
-  },
-  mutations: {
+    },
     /**
      * @description 用户登录后从持久化数据加载一系列的设置
      * @param {Object} state vuex state
      */
-    load (state) {
-      // DB -> store 加载用户名
-      // this.commit('d2admin/user/load')
-      // DB -> store 加载主题
-      this.commit('d2admin/theme/load')
-      // DB -> store 加载页面过渡效果设置
-      this.commit('d2admin/transition/load')
-      // DB -> store 持久化数据加载上次退出时的多页列表
-      this.commit('d2admin/page/openedLoad')
-      // DB -> store 持久化数据加载侧边栏折叠状态
-      this.commit('d2admin/menu/asideCollapseLoad')
-      // DB -> store 持久化数据加载全局尺寸
-      this.commit('d2admin/size/load')
+    load ({ commit, dispatch }) {
+      return new Promise(async resolve => {
+        // DB -> store 加载用户名
+        await dispatch('d2admin/user/load', null, { root: true })
+        // DB -> store 加载主题
+        await dispatch('d2admin/theme/load', null, { root: true })
+        // DB -> store 加载页面过渡效果设置
+        await dispatch('d2admin/transition/load', null, { root: true })
+        // DB -> store 持久化数据加载上次退出时的多页列表
+        await dispatch('d2admin/page/openedLoad', null, { root: true })
+        // DB -> store 持久化数据加载侧边栏折叠状态
+        await dispatch('d2admin/menu/asideCollapseLoad', null, { root: true })
+        // DB -> store 持久化数据加载全局尺寸
+        await dispatch('d2admin/size/load', null, { root: true })
+        // DB -> store 持久化数据字典
+        // DB -> store 持久化数据加载全局尺寸
+        await dispatch('d2admin/dict/load', null, { root: true })
+        // end
+        resolve()
+      })
     }
   }
 }

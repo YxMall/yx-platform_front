@@ -151,19 +151,13 @@ export default {
         if (valid) {
           if (this.menuItem.menuId !== 0) {
             updateMemu(this.menuItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isUpdateSuccess(res)
               this.menuFormVisible = false;
               this.$emit('refreshDataList')
             })
           } else {
             addMemu(this.menuItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isAddSuccess(res)
               this.menuFormVisible = false;
               this.$emit('refreshDataList')
             })

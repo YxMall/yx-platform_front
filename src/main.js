@@ -17,9 +17,10 @@ import router from './router'
 // 权限
 import { isAuth } from '@/libs/auth.util'
 
+import msgUtil from '@/libs/msg.util.js'
 // 核心插件
 Vue.use(d2Admin)
-
+Vue.prototype.msgUtil = msgUtil // 全局方法
 Vue.prototype.isAuth = isAuth // 权限方法
 new Vue({
   router,

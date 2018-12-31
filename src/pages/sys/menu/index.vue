@@ -161,10 +161,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteMenu(menuId).then(res => {
-          this.$message({
-            message: res.msg,
-            type: 'success'
-          });
+          this.msgUtil.isDelSuccess(res)
           this.getMenuData();
         })
       })

@@ -10,21 +10,19 @@
             <d2-icon name="tags" />全部标为已读</el-button>
         </div>
         <el-table :data="unreadList"
-                  @row-click="handleNotifyDetail"
                   :show-header="false"
                   style="width: 100%">
           <el-table-column>
             <template slot-scope="scope">
-              <router-link to="/notify/detail">
-                <span class="message-title">{{scope.row.title}}</span>
-              </router-link>
+              <span class="message-title"
+                    @click="handleNotifyDetail(scope.row)">{{scope.row.title}}</span>
             </template>
           </el-table-column>
           <el-table-column width="180">
             <template slot-scope="scope">
               <div style="display:flex">
                 <img :src='scope.row.avatar'
-                     class="d2-mt-5	"
+                     class="d2-mt-5"
                      style="width:30px;height:30px;margin-right:10px;border-radius:15px" />
                 <span style="line-height:43px">{{scope.row.createUserName}}</span>
               </div>
@@ -53,19 +51,19 @@
             </el-button>
           </div>
           <el-table :data="readList"
-                    @row-click="handleNotifyDetail"
                     :show-header="false"
                     style="width: 100%">
             <el-table-column>
               <template slot-scope="scope">
-                <span class="message-title">{{scope.row.title}}</span>
+                <span class="message-title"
+                      @click="handleNotifyDetail(scope.row)">{{scope.row.title}}</span>
               </template>
             </el-table-column>
             <el-table-column width="180">
               <template slot-scope="scope">
                 <div style="display:flex">
                   <img :src='scope.row.avatar'
-                       class="d2-mt-5	"
+                       class="d2-mt-5"
                        style="width:30px;height:30px;margin-right:10px;border-radius:15px" />
                   <span style="line-height:43px">{{scope.row.createUserName}}</span>
                 </div>
@@ -97,19 +95,19 @@
             </el-button>
           </div>
           <el-table :data="recycleList"
-                    @row-click="handleNotifyDetail"
                     :show-header="false"
                     style="width: 100%">
             <el-table-column>
               <template slot-scope="scope">
-                <span class="message-title">{{scope.row.title}}</span>
+                <span class="message-title"
+                      @click="handleNotifyDetail(scope.row)">{{scope.row.title}}</span>
               </template>
             </el-table-column>
             <el-table-column width="180">
               <template slot-scope="scope">
                 <div style="display:flex">
                   <img :src='scope.row.avatar'
-                       class="d2-mt-5	"
+                       class="d2-mt-5"
                        style="width:30px;height:30px;margin-right:10px;border-radius:15px" />
                   <span style="line-height:43px">{{scope.row.createUserName}}</span>
                 </div>
@@ -168,9 +166,12 @@ export default {
         recordsId: []
       },
       showHeader: false,
-      unreadList: [],// 未读
-      readList: [],// 已读
-      recycleList: []// 回收站
+      // 未读
+      unreadList: [],
+      // 已读
+      readList: [],
+      // 回收站
+      recycleList: []
     }
   },
   mounted () {
@@ -266,8 +267,6 @@ export default {
         this.HandleClear(deleteIds)
       })
     },
-
-
     /**
      * 还原消息
      */
@@ -292,9 +291,9 @@ export default {
     /**
      * 显示通知详情
      */
-    handleNotifyDetail (row, event, column) {
+    handleNotifyDetail (row) {
       this.$router.push({
-        path: `/notify/detail/${row.id}`,
+        path: `/notify/detail/${row.id}`
       })
     },
     /**

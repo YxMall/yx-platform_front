@@ -64,15 +64,14 @@ export default {
      * 初始化表单
      */
     initForm (configId) {
-      //先清除表单信息
+      // 先清除表单信息
       this.configItem.configId = configId || 0
-
       this.configFormVisible = true
       this.$nextTick(() => {
         this.$refs['configForm'].resetFields()
       })
       // 修改
-      if (this.configItem.configId != 0) {
+      if (this.configItem.configId !== 0) {
         configInfo(configId).then(res => {
           this.configItem = res;
         })
@@ -84,21 +83,15 @@ export default {
     submitConfigFormHandle () {
       this.$refs['configForm'].validate((valid) => {
         if (valid) {
-          if (this.configItem.configId != 0) {
+          if (this.configItem.configId !== 0) {
             updateConfig(this.configItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isUpdateSuccess(res)
               this.configFormVisible = false;
               this.$emit('refreshDataList')
             })
           } else {
             addConfig(this.configItem).then(res => {
-              this.$message({
-                message: res.msg,
-                type: 'success'
-              });
+              this.msgUtil.isAddSuccess(res)
               this.configFormVisible = false;
               this.$emit('refreshDataList')
             })

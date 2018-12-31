@@ -23,6 +23,13 @@ export const notDynamicFrameIn = [
     path: '/notify/detail/:id',
     name: 'notifyDetail',
     component: () => import('@/pages/oa/notify-record/notify-detail')
+  },
+  // 字典数据
+  {
+    title: '字典数据',
+    path: 'sys/dictdata/:code',
+    name: 'dictData',
+    component: () => import('@/pages/sys/dict-data')
   }
 ]
 

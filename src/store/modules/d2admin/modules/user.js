@@ -1,7 +1,6 @@
 // 设置文件
 import setting from '@/setting.js'
 import { GetUserInfo } from '@/api/sys/login'
-import util from '@/libs/util'
 export default {
   namespaced: true,
   state: {
@@ -15,13 +14,12 @@ export default {
      * @param {Object} state vuex state
      * @param {*} info info
      */
-    getUserInfo ({ state, commit }) {
+    getUserInfo ({ state, commit, dispatch }) {
       return new Promise((resolve, reject) => {
-        GetUserInfo(util.cookies.get('accessToken'))
+        GetUserInfo()
           .then(res => {
             const { info, menu, permission } = res
-            // 设置用户信息
-            state.info = info
+            dispatch('set', info)
             // 设置用户权限
             state.permission = permission
             // 初始化菜单
@@ -33,7 +31,9 @@ export default {
             // 根据菜单初始化路由
             commit('d2admin/router/GenerateRoutes', menu, { root: true })
             // 用户登录后从持久化存储加载一系列的设置
-            commit('d2admin/account/load', null, { root: true })
+            dispatch('d2admin/account/load', null, { root: true })
+            // 初始化字典数据
+            dispatch('d2admin/dict/setDictData', null, { root: true })
             resolve()
           })
           .catch(err => {

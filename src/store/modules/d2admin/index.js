@@ -13,6 +13,7 @@ import page from './modules/page'
 import transition from './modules/transition'
 import search from './modules/search'
 import size from './modules/size'
+import dict from './modules/dict'
 
 export default {
   namespaced: true,
@@ -31,6 +32,7 @@ export default {
     page,
     transition,
     search,
-    size
+    size,
+    dict
   }
 }
