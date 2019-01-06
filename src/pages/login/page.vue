@@ -228,7 +228,7 @@ export default {
     // 刷新验证码
     getImageCodePath () {
       this.formLogin.uuid = util.uuid();
-      this.path = this.$baseUrl + 'code/image.jpg?uuid=' + this.formLogin.uuid
+      this.path = process.env.VUE_APP_API + 'code/image.jpg?uuid=' + this.formLogin.uuid
     }
   }
 }
