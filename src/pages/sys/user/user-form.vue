@@ -92,7 +92,7 @@
                    v-model="avatarShow"
                    :width="300"
                    :height="300"
-                   url="/oss/upload"
+                   :url="uploadUrl"
                    :headers="headers"
                    img-format="png">
     </avatar-upload>
@@ -129,6 +129,7 @@ export default {
     return {
       // 头像上传
       avatarShow: false,
+      uploadUrl: process.env.VUE_APP_API + '/oss/upload',
       headers: {
         accessToken: util.cookies.get('accessToken')
       },

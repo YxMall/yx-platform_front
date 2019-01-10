@@ -50,6 +50,7 @@
                 </el-form-item>
                 <el-form-item prop="code">
                   <el-input type="text"
+                            @keyup.enter.native="submit"
                             v-model="formLogin.code"
                             placeholder="- - - -">
                     <template slot="prepend">验证码</template>

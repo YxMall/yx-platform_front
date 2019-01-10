@@ -162,7 +162,7 @@ export default {
      * 接收点击切换侧边栏的按钮
      */
     handleToggleAside () {
-      this.menuAsideCollapseToggle()
+      this.asideCollapseToggle()
     }
   }
 }

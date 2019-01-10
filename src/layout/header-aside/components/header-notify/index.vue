@@ -23,7 +23,7 @@ import { getUnreadCount } from '@/api/oa/notify-record';
 import util from '@/libs/util'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: 'headerNotify',
   data () {
@@ -62,7 +62,7 @@ export default {
     initWebSocket () {
       this.connection();
       let that = this;
-      //断开重连机制, 尝试发送消息, 捕获异常发生时重连
+      // 断开重连机制, 尝试发送消息, 捕获异常发生时重连
       this.timer = setInterval(() => {
         try {
           that.stompClient.send('test');
@@ -74,7 +74,7 @@ export default {
     },
     connection () {
       // 建立连接对象
-      let socket = new SockJS('/endpointChat');
+      let socket = new SockJS(process.env.VUE_APP_API + 'endpointChat');
       // 获取STOMP子协议的客户端对象
       this.stompClient = Stomp.over(socket);
       // 定义客户端的认证信息,按需求配置
@@ -100,11 +100,12 @@ export default {
             type: 'success',
             message: JSON.parse(res.body).title
           });
-        }, headers);
+        }, headers)
+        // 用户加入接口
         this.stompClient.send('/app/chat.addUser',
           headers,
           JSON.stringify({ sender: '', chatType: 'JOIN' }),
-        )   // 用户加入接口
+        )
       }, (err) => {
         // 连接发生错误时的处理函数
         console.log('失败')
