@@ -24,6 +24,7 @@ const router = new VueRouter({
  * 权限验证
  */
 router.beforeEach((to, from, next) => {
+  debugger
   // 进度条
   NProgress.start()
   // 关闭搜索面板
@@ -76,6 +77,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(to => {
+  debugger
   // 进度条
   NProgress.done()
   // 需要的信息

@@ -63,7 +63,6 @@
                 </el-form-item>
                 <el-button size="default"
                            @click="submit"
-                           @keyup.enter.native="submit"
                            type="primary"
                            class="button-login">登录</el-button>
               </el-form>

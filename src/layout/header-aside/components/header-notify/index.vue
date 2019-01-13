@@ -3,17 +3,17 @@
     <el-tooltip effect='dark'
                 content='通知'
                 placement='bottom'>
-      <router-link to='/oa/notifyrecord'>
-        <el-button class='d2-ml-0 d2-mr btn-text can-hover'
-                   type='text'
-                   @click='dialogVisible = true'>
-          <el-badge :value='unReadMsgCount'
-                    class='item'>
-            <d2-icon name='bell-o'
-                     style='font-size: 16px' />
-          </el-badge>
-        </el-button>
-      </router-link>
+      <!-- <router-link to='/oa/notifyrecord'> -->
+      <el-button class='d2-ml-0 d2-mr btn-text can-hover'
+                 type='text'
+                 @click='dialogVisible = true'>
+        <el-badge :value='unReadMsgCount'
+                  class='item'>
+          <d2-icon name='bell-o'
+                   style='font-size: 16px' />
+        </el-badge>
+      </el-button>
+      <!-- </router-link> -->
     </el-tooltip>
   </div>
 </template>

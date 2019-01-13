@@ -386,6 +386,7 @@ export default {
      * @param {Array} routes routes
      */
     init (state, routes) {
+      debugger
       const pool = []
       const push = function (routes) {
         routes.forEach(route => {
