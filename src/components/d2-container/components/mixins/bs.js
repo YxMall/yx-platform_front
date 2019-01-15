@@ -26,6 +26,7 @@ export default {
         Object.assign(
           {
             mouseWheel: true,
+            click: true,
             scrollbar: {
               fade: true,
               interactive: false

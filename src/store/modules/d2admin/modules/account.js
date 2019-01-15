@@ -41,14 +41,6 @@ export default {
           // 如有必要 token 需要定时更新，默认保存一天
           util.cookies.set('uuid', res.username)
           util.cookies.set('accessToken', res.accessToken)
-          // // 设置 vuex 用户信息
-          // await dispatch(
-          //   'd2admin/user/set',
-          //   {
-          //     name: res.name
-          //   },
-          //   { root: true }
-          // )
           // 用户登录后从持久化数据加载一系列的设置
           await dispatch('load')
           // 获取数据字典内容
@@ -129,7 +121,6 @@ export default {
         // DB -> store 持久化数据加载全局尺寸
         await dispatch('d2admin/size/load', null, { root: true })
         // DB -> store 持久化数据字典
-        // DB -> store 持久化数据加载全局尺寸
         await dispatch('d2admin/dict/load', null, { root: true })
         // end
         resolve()

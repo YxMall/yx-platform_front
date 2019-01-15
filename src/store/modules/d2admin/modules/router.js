@@ -1,6 +1,6 @@
 import asyncRouterMap from '@/router/map'
 import { frameIn, errorPage, notDynamicFrameIn } from '@/router/routes'
-
+import util from '@/libs/util.js'
 // const menuAside = []
 
 function generateRouter (item) {
@@ -31,6 +31,8 @@ function convertRouter (menu) {
   const addRoutes = []
   if (menu) {
     menu.forEach(m => {
+      debugger
+      m.path = m.path || util.uuid()
       if (
         !/^https:\/\/|http:\/\//.test(m.path) &&
         m.path !== undefined &&
