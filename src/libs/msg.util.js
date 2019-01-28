@@ -56,4 +56,5 @@ msgUtil.isDelSuccess = function (result) {
     })
     : Message.error(msgMap.get('delError'))
 }
+
 export default msgUtil

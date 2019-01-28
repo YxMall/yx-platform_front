@@ -1,12 +1,13 @@
 import request from '@/plugin/axios'
 
+const PREFIX_URL = '/sys/user/'
 /**
  * 获取分页信息
  * @param {分页过滤条件} params
  */
 export function getUserData (params) {
   return request({
-    url: '/user/list',
+    url: `${PREFIX_URL}list`,
     method: 'get',
     params
   })
@@ -18,7 +19,7 @@ export function getUserData (params) {
  */
 export function enableStatus (params) {
   return request({
-    url: '/user/isEnable',
+    url: `${PREFIX_URL}isEnable`,
     method: 'get',
     params
   })
@@ -29,7 +30,7 @@ export function enableStatus (params) {
  */
 export function checkName (params) {
   return request({
-    url: '/user/checkName',
+    url: `${PREFIX_URL}checkName`,
     method: 'post',
     data: params
   })
@@ -41,7 +42,7 @@ export function checkName (params) {
  */
 export function userInfo (userId) {
   return request({
-    url: '/user/get/' + userId,
+    url: `${PREFIX_URL}get/${userId}`,
     method: 'get'
   })
 }
@@ -52,7 +53,7 @@ export function userInfo (userId) {
  */
 export function addUser (params) {
   return request({
-    url: '/user/add',
+    url: `${PREFIX_URL}add`,
     method: 'post',
     data: params
   })
@@ -64,7 +65,7 @@ export function addUser (params) {
  */
 export function updateUser (params) {
   return request({
-    url: '/user/update',
+    url: `${PREFIX_URL}update`,
     method: 'put',
     data: params
   })
@@ -76,7 +77,7 @@ export function updateUser (params) {
  */
 export function deleteUser (userId) {
   return request({
-    url: '/user/delete/' + userId,
+    url: `${PREFIX_URL}delete/${userId}`,
     method: 'delete'
   })
 }
@@ -87,7 +88,7 @@ export function deleteUser (userId) {
  */
 export function getCurrentUserInfo () {
   return request({
-    url: '/user/getCurrentUser',
+    url: `${PREFIX_URL}getCurrentUser`,
     method: 'get'
   })
 }
@@ -98,7 +99,7 @@ export function getCurrentUserInfo () {
  */
 export function updateCurrentUser (params) {
   return request({
-    url: '/user/updateCurrentUser',
+    url: `${PREFIX_URL}updateCurrentUser`,
     method: 'put',
     data: params
   })

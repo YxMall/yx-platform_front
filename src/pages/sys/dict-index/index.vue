@@ -12,7 +12,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"
-                     v-show="isAuth('sys:dictindex:list')"
+                     v-show="isAuth('sys:dict:list')"
                      @keyup.enter.native="getDictIndexTableData"
                      @click="getDictIndexTableData">
             <d2-icon name="search" />
@@ -28,7 +28,7 @@
       </el-form>
       <el-button-group>
         <el-button type="primary"
-                   v-show="isAuth('sys:dictindex:add')"
+                   v-show="isAuth('sys:dict:add')"
                    @click="addOrUpdateHandle(0)">
           <d2-icon name="plus" />
           添加
@@ -87,13 +87,13 @@
         <template slot-scope="scope">
           <el-button size="small"
                      type="primary"
-                     v-show="isAuth('sys:dictindex:update')"
+                     v-show="isAuth('sys:dict:update')"
                      @click="addOrUpdateHandle(scope.row.dictId)">
             <d2-icon name='edit' />
             修改</el-button>
           <el-button size="small"
                      type="danger"
-                     v-show="isAuth('sys:dictindex:delete')"
+                     v-show="isAuth('sys:dict:delete')"
                      @click="deleteDictIndexHandle(scope.row.dictId)">
             <d2-icon name='trash' />
             删除</el-button>

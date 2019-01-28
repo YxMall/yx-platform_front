@@ -1,12 +1,14 @@
 import request from '@/plugin/axios'
 
+// 路径前缀
+const PREFIX_URL = '/sys/dictdata/'
 /**
  * 获取数据字典数据分页信息
  * @param {*} params
  */
 export function getDictDataData (params) {
   return request({
-    url: '/sys/dictdata/list',
+    url: `${PREFIX_URL}/list`,
     method: 'get',
     params
   })
@@ -18,7 +20,7 @@ export function getDictDataData (params) {
  */
 export function dictdataInfo (dataId) {
   return request({
-    url: '/sys/dictdata/get/' + dataId,
+    url: `${PREFIX_URL}/get/${dataId}`,
     method: 'get'
   })
 }
@@ -29,7 +31,7 @@ export function dictdataInfo (dataId) {
  */
 export function addDictData (params) {
   return request({
-    url: '/sys/dictdata/add',
+    url: `${PREFIX_URL}/add`,
     method: 'post',
     data: params
   })
@@ -41,7 +43,7 @@ export function addDictData (params) {
  */
 export function updateDictData (params) {
   return request({
-    url: '/sys/dictdata/update',
+    url: `${PREFIX_URL}/update`,
     method: 'put',
     data: params
   })
@@ -53,7 +55,7 @@ export function updateDictData (params) {
  */
 export function deleteDictData (dataId) {
   return request({
-    url: '/sys/dictdata/delete/' + dataId,
+    url: `${PREFIX_URL}/delete/${dataId}`,
     method: 'delete'
   })
 }
@@ -64,7 +66,7 @@ export function deleteDictData (dataId) {
  */
 export function getAllDict (dataId) {
   return request({
-    url: '/sys/dictdata/getAllDict',
+    url: `${PREFIX_URL}/getAllDict`,
     method: 'get'
   })
 }

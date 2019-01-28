@@ -1,12 +1,13 @@
 import request from '@/plugin/axios'
 
+const PREFIX_URL = '/oa/notify/'
 /**
  * 获取通知分页信息
  * @param {*} params
  */
 export function getNotifyData (params) {
   return request({
-    url: '/oa/notify/sendList',
+    url: `${PREFIX_URL}sendList`,
     method: 'get',
     params
   })
@@ -18,7 +19,7 @@ export function getNotifyData (params) {
  */
 export function notifyInfo (id) {
   return request({
-    url: '/oa/notify/get/' + id,
+    url: `${PREFIX_URL}get/${id}`,
     method: 'get'
   })
 }
@@ -29,7 +30,7 @@ export function notifyInfo (id) {
  */
 export function addNotify (params) {
   return request({
-    url: '/oa/notify/add',
+    url: `${PREFIX_URL}add`,
     method: 'post',
     data: params
   })
@@ -41,7 +42,7 @@ export function addNotify (params) {
  */
 export function updateNotify (params) {
   return request({
-    url: '/oa/notify/update',
+    url: `${PREFIX_URL}update`,
     method: 'put',
     data: params
   })
@@ -53,7 +54,7 @@ export function updateNotify (params) {
  */
 export function deleteNotify (id) {
   return request({
-    url: '/oa/notify/delete/' + id,
+    url: `${PREFIX_URL}delete/${id}`,
     method: 'delete'
   })
 }

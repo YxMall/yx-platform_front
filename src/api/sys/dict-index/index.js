@@ -1,12 +1,14 @@
 import request from '@/plugin/axios'
 
+const PREFIX_URL = '/sys/dictindex/'
+
 /**
  * 获取数据字典索引表分页信息
  * @param {*} params
  */
 export function getDictIndexData (params) {
   return request({
-    url: '/sys/dictindex/list',
+    url: `${PREFIX_URL}/list`,
     method: 'get',
     params
   })
@@ -18,7 +20,7 @@ export function getDictIndexData (params) {
  */
 export function dictindexInfo (dictId) {
   return request({
-    url: '/sys/dictindex/get/' + dictId,
+    url: `${PREFIX_URL}/get/${dictId}`,
     method: 'get'
   })
 }
@@ -29,7 +31,7 @@ export function dictindexInfo (dictId) {
  */
 export function addDictIndex (params) {
   return request({
-    url: '/sys/dictindex/add',
+    url: `${PREFIX_URL}/add`,
     method: 'post',
     data: params
   })
@@ -41,7 +43,7 @@ export function addDictIndex (params) {
  */
 export function updateDictIndex (params) {
   return request({
-    url: '/sys/dictindex/update',
+    url: `${PREFIX_URL}/update`,
     method: 'put',
     data: params
   })
@@ -53,7 +55,7 @@ export function updateDictIndex (params) {
  */
 export function deleteDictIndex (dictId) {
   return request({
-    url: '/sys/dictindex/delete/' + dictId,
+    url: `${PREFIX_URL}/delete/${dictId}`,
     method: 'delete'
   })
 }

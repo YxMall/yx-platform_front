@@ -3,15 +3,19 @@
     <el-tooltip effect='dark'
                 content='通知'
                 placement='bottom'>
-      <router-link to='/oa/notifyrecord'>
+      <router-link to='/oa/myNotify'>
         <el-button class='d2-ml-0 d2-mr btn-text can-hover'
                    type='text'
                    @click='dialogVisible = true'>
           <el-badge :value='unReadMsgCount'
+                    v-if="unReadMsgCount>0"
                     class='item'>
             <d2-icon name='bell-o'
                      style='font-size: 16px' />
           </el-badge>
+          <d2-icon v-else
+                   name='bell-o'
+                   style='font-size: 16px' />
         </el-button>
       </router-link>
     </el-tooltip>
@@ -84,16 +88,16 @@ export default {
       // 向服务器发起websocket连接
       this.stompClient.connect(headers, () => {
         this.stompClient.subscribe('/topic/notifications', (res) => {
-          // 订阅服务端提供的某个topic
+          // 订阅全局通知
           this.setUnreadCount()
           this.$notify({
             title: '新消息',
             type: 'success',
             message: JSON.parse(res.body).title
-          });
-        }, headers);
+          })
+        }, headers)
         this.stompClient.subscribe('/user/' + this.info.username + '/queue/notifications', (res) => {
-          // 订阅服务端提供的某个topic
+          // 订阅个人通知
           this.setUnreadCount()
           this.$notify({
             title: '新消息',
@@ -104,18 +108,18 @@ export default {
         // 用户加入接口
         this.stompClient.send('/app/chat.addUser',
           headers,
-          JSON.stringify({ sender: '', chatType: 'JOIN' }),
+          JSON.stringify({ sender: '', chatType: 'JOIN' })
         )
       }, (err) => {
         // 连接发生错误时的处理函数
         console.log('失败')
-        console.log(err);
+        console.log(err)
       });
     },
     // 断开连接
     disconnect () {
       if (this.stompClient) {
-        this.stompClient.disconnect();
+        this.stompClient.disconnect()
       }
     }
   }

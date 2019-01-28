@@ -20,7 +20,7 @@ export function AccountLogin (params) {
  */
 export function GetUserInfo () {
   return request({
-    url: '/user/info',
+    url: '/sys/user/info',
     method: 'get'
   })
 }

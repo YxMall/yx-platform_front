@@ -1,32 +1,16 @@
 import request from '@/plugin/axios'
 
-export function getConfigData (params) {
-  return request({
-    url: '/config/list',
-    method: 'get',
-    params
-  })
-}
-
+// 路径前缀
+const PREFIX_URL = '/sys/config/'
 /**
- * 删除
- * @param {*} params
+ * 获取配置信息
+ * @param  params
  */
-export function deleteConfig (configId) {
+export function configInfo (key) {
   return request({
-    url: '/config/delete/' + configId,
-    method: 'delete'
-  })
-}
-
-/**
- *  获取用户信息
- * @param {用户Id} params
- */
-export function configInfo (configId) {
-  return request({
-    url: '/config/get/' + configId,
-    method: 'get'
+    url: `${PREFIX_URL}/getConfig`,
+    method: 'post',
+    data: key
   })
 }
 
@@ -34,22 +18,10 @@ export function configInfo (configId) {
  * 添加配置
  * @param  params
  */
-export function addConfig (params) {
+export function saveOrUpdateConfig (params) {
   return request({
-    url: '/config/add',
+    url: `${PREFIX_URL}/saveOrUpdate`,
     method: 'post',
-    data: params
-  })
-}
-
-/**
- * 修改配置
- * @param  params
- */
-export function updateConfig (params) {
-  return request({
-    url: '/config/update',
-    method: 'put',
     data: params
   })
 }

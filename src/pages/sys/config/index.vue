@@ -1,169 +1,257 @@
 <template>
   <d2-container>
-    <template slot="header">
-      <el-form :inline="true"
-               class="d2-pl-15 d2-pt-15"
-               ref="params">
-        <el-form-item label="配置key"
-                      prop="key">
-          <el-input placeholder="输入配置key过滤"
-                    v-model="params.key">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="备注"
-                      prop="remark">
-          <el-input placeholder="输入备注进行过滤"
-                    v-model="params.key">
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary"
-                     @click="getConfigTableData">
-            <d2-icon name="search" />
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click=" this.$refs[params].resetFields()">
-            <d2-icon name="refresh" />
-            重置
-          </el-button>
-        </el-form-item>
-      </el-form>
-      <el-button-group>
-        <el-button type="primary"
-                   @click="addOrUpdateHandle(0)">
-          <d2-icon name="plus" />
-          添加
-        </el-button>
-      </el-button-group>
-    </template>
-    <el-table :data="configList"
-              border
-              stripe
-              class="d2-pt-5"
-              style="width: 100%;">
-      <el-table-column prop="configId"
-                       label="配置ID"
-                       align="center">
-      </el-table-column>
-      <el-table-column prop="configKey"
-                       label="配置key"
-                       align="center">
-      </el-table-column>
-      <el-table-column show-overflow-tooltip
-                       prop="configValue"
-                       label="配置value"
-                       align="center">
-      </el-table-column>
-      <el-table-column prop="remark"
-                       label="备注"
-                       align="center">
-      </el-table-column>
-      <el-table-column prop="createTime"
-                       label="创建时间"
-                       sortable
-                       align="center">
-      </el-table-column>
-      <el-table-column header-align="center"
-                       align="center"
-                       width="300"
-                       label="操作">
-        <template slot-scope="scope">
-          <el-button size="small"
-                     type="primary"
-                     @click="addOrUpdateHandle(scope.row.configId)">
-            <d2-icon name='edit' />
-            修改</el-button>
-          <el-button size="small"
-                     type="danger"
-                     @click="deleteConfigHandle(scope.row.configId)">
-            <d2-icon name='trash' />
-            删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <template slot="footer">
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="params.currPage"
-                     :page-sizes="[10, 20, 30, 40]"
-                     :page-size="10"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="params.totalCount">
-      </el-pagination>
-    </template>
-    <config-form v-if="configFormVisible"
-                 @refreshDataList='getConfigTableData'
-                 ref="configForm">
-    </config-form>
+    <el-tabs v-model="activeName"
+             @tab-click="configTabHandle">
+      <el-tab-pane label="云存储配置"
+                   name="cloudStorage">
+        <el-card class="box-card">
+          <el-form ref="cloudStorageForm"
+                   :rules="cloudStorageFormRules"
+                   :model="cloudStorageForm"
+                   hide-required-asterisk='true'
+                   label-width="120px">
+            <el-form-item label="云存储类型"
+                          prop="ossType"
+                          required>
+              <el-select v-model="cloudStorageForm.ossType"
+                         placeholder="请选择云存储类型">
+                <el-option v-for="dict in CurrentTypeList"
+                           :key="dict.dataKey"
+                           :label="dict.dataValue"
+                           :value="dict.dataKey"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="域名"
+                          prop="domain">
+              <el-input v-model="cloudStorageForm.domain"
+                        :placeholder="`请输入${currentStorageName}域名`" />
+            </el-form-item>
+            <el-form-item label="region"
+                          v-if="cloudStorageForm.ossType==0"
+                          prop="region">
+              <el-input v-model="cloudStorageForm.region"
+                        :placeholder="`请输入${currentStorageName}region`" />
+            </el-form-item>
+            <el-form-item label="EndPoint"
+                          v-if="cloudStorageForm.ossType==1"
+                          prop="endpoint">
+              <el-input v-model="cloudStorageForm.endpoint"
+                        :placeholder="`请输入${currentStorageName}EndPoint`" />
+            </el-form-item>
+            <el-form-item label="AccessKeyId"
+                          prop="accessKeyId">
+              <el-input v-model="cloudStorageForm.accessKeyId"
+                        type='password'
+                        :placeholder="`请输入${currentStorageName}AccessKeyId`" />
+            </el-form-item>
+            <el-form-item label="AccessKeySecret"
+                          prop="accessKeySecret">
+              <el-input v-model="cloudStorageForm.accessKeySecret"
+                        type='password'
+                        :placeholder="`请输入${currentStorageName}AccessKeySecret`" />
+            </el-form-item>
+            <el-form-item label="BucketName"
+                          prop="bucketName">
+              <el-input v-model="cloudStorageForm.bucketName"
+                        :placeholder="`请输入${currentStorageName}桶名`" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary"
+                         @click="saveConfigHandle(cloudStorageForm,'cloudStorageForm')">保存并启用</el-button>
+              <el-button @click="resetFormHandle('cloudStorageForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="短信配置"
+                   name="mobileSms">
+        <el-card class="box-card">
+          <el-form ref="mobileForm"
+                   :rules="mobileFormRules"
+                   :model="mobileForm"
+                   hide-required-asterisk='true'
+                   label-width="120px">
+            <el-form-item label="短信平台"
+                          prop="ossType">
+              <el-select v-model="mobileForm.mobileType"
+                         placeholder="请选择短信平台">
+                <el-option v-for="dict in CurrentTypeList"
+                           :key="dict.dataKey"
+                           :label="dict.dataValue"
+                           :value="dict.dataKey"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="模板ID"
+                          prop="templateId">
+              <el-input v-model="mobileForm.templateId"
+                        placeholder="请输入短信模板ID" />
+            </el-form-item>
+            <el-form-item label="签名"
+                          prop="sign">
+              <el-input v-model="mobileForm.sign"
+                        placeholder="请输入短信签名" />
+            </el-form-item>
+            <el-form-item label="appId"
+                          prop="appId">
+              <el-input v-model="mobileForm.appId"
+                        type='password'
+                        placeholder="请输入短信应用appID" />
+            </el-form-item>
+            <el-form-item label="appKey"
+                          prop="appKey">
+              <el-input v-model="mobileForm.appKey"
+                        type='password'
+                        placeholder="请输入短信应用appkey" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary"
+                         @click="saveConfigHandle(mobileForm,'mobileForm')">保存并启用</el-button>
+              <el-button @click="resetFormHandle('mobileForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="邮件配置"
+                   name="email">邮件配置</el-tab-pane>
+    </el-tabs>
   </d2-container>
 </template>
 
 <script>
-import configForm from './config-form';
-import { getConfigData, deleteConfig } from '@/api/sys/config';
+import util from '@/libs/util.js'
+import { saveOrUpdateConfig, configInfo } from '@/api/sys/config'
 export default {
-  name: 'config',
-  components: {
-    configForm
-  },
+  name: 'sysConfig',
   data () {
     return {
-      configList: [],
-      configFormVisible: false,
-      params: {
-        key: '',
-        remark: '',
-        totalCount: 0,
-        currPage: 1,
-        pageSize: 10
-      }
-    };
+      activeName: 'cloudStorage',
+      config: {
+        configId: '',
+        configKey: '',
+        configValue: ''
+      },
+      cloudStorageForm: {
+        ossType: '0',
+        region: '',
+        domain: '',
+        endpoint: '',
+        accessKeyId: '',
+        accessKeySecret: '',
+        bucketName: ''
+      },
+      cloudStorageFormRules: {
+        domain: [
+          { required: true, message: '请输入域名', trigger: 'blur' }
+        ],
+        region: [
+          { required: true, message: '请输入region', trigger: 'blur' }
+        ],
+        endpoint: [
+          { required: true, message: '请输入endpoint', trigger: 'blur' }
+        ],
+        accessKeyId: [
+          { required: true, message: '请输入accessKeyId', trigger: 'blur' }
+        ],
+        accessKeySecret: [
+          { required: true, message: '请输入accessKeySecret', trigger: 'blur' }
+        ],
+        bucketName: [
+          { required: true, message: '请输入桶名', trigger: 'blur' }
+        ]
+      },
+      mobileForm: {
+        mobileType: '1',
+        templateId: '',
+        sign: '',
+        appId: '',
+        appKey: ''
+      },
+      mobileFormRules: {
+        mobileType: [
+          { required: true, message: '请选择短信平台', trigger: 'blur' }
+        ],
+        templateId: [
+          { required: true, message: '请输入短信模板ID', trigger: 'blur' }
+        ],
+        sign: [
+          { required: true, message: '请输入短信签名', trigger: 'blur' }
+        ],
+        appId: [
+          { required: true, message: '请输入短信应用appID', trigger: 'blur' }
+        ],
+        appKey: [
+          { required: true, message: '请输入短信应用appkey', trigger: 'blur' }
+        ]
+      },
+    }
+  },
+  computed: {
+    // 当前配置类型列表
+    CurrentTypeList: function () {
+      return util.getDict(this.activeName).dictList
+    },
+    // 当前存储系统名
+    currentStorageName: function () {
+      return this.CurrentTypeList.find(storage => storage.dataKey === this.cloudStorageForm.ossType).dataValue
+    }
   },
   mounted () {
-    this.getConfigTableData();
+    this.configTabHandle('', '')
   },
   methods: {
-    handleSizeChange (val) {
-      this.params.pageSize = val;
-      this.getConfigTableData();
-    },
-    handleCurrentChange (val) {
-      this.params.currPage = val;
-      this.getConfigTableData();
-    },
-    getConfigTableData () {
-      getConfigData(this.params).then(res => {
-        const { list, totalCount } = res
-        this.configList = list
-        this.params.totalCount = totalCount;
+    /**
+     * 配置tab切换
+     */
+    configTabHandle (tab, event) {
+      configInfo(this.activeName).then(res => {
+        if (res.data) {
+          this.config = res.data
+          switch (this.activeName) {
+            case 'cloudStorage':
+              this.cloudStorageForm = JSON.parse(res.data.configValue)
+              break;
+            case 'mobileSms':
+              this.mobileForm = JSON.parse(res.data.configValue)
+              break;
+          }
+        } else {
+          this.config.configId = null
+        }
       })
     },
     /**
-     * 打开角色表单
+     * 重置表单
      */
-    addOrUpdateHandle (configId) {
-      this.configFormVisible = true;
-      this.$nextTick(() => {
-        this.$refs.configForm.initForm(configId)
-      })
+    resetFormHandle (formName) {
+      this.$refs[formName].resetFields()
     },
-    deleteConfigHandle (configId) {
-      this.$confirm('此操作将永久ID为[' + configId + ']配置删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteConfig(configId).then(res => {
-          this.msgUtil.isDelSuccess(res)
-          this.getConfigTableData();
-        })
+    /**
+     * 保存配置
+     * data 配置数据
+     * formName  表单名字
+     */
+    saveConfigHandle (data, formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.config.configKey = this.activeName
+          this.config.configValue = JSON.stringify(data)
+          saveOrUpdateConfig(this.config).then(res => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+          })
+        } else {
+          return false
+        }
       })
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.box-card {
+  width: 580px;
+}
 </style>

@@ -1,12 +1,14 @@
 import request from '@/plugin/axios'
 
+const PREFIX_URL = '/sys/role/'
+
 /**
  * 获取角色分页信息
  * @param {*} params
  */
 export function getRoleData (params) {
   return request({
-    url: '/role/list',
+    url: `${PREFIX_URL}/list`,
     method: 'get',
     params
   })
@@ -18,7 +20,7 @@ export function getRoleData (params) {
  */
 export function getAllRole () {
   return request({
-    url: '/role/all',
+    url: `${PREFIX_URL}/all`,
     method: 'get'
   })
 }
@@ -29,7 +31,7 @@ export function getAllRole () {
  */
 export function roleInfo (roleId) {
   return request({
-    url: '/role/get/' + roleId,
+    url: `${PREFIX_URL}/get/${roleId}`,
     method: 'get'
   })
 }
@@ -40,7 +42,7 @@ export function roleInfo (roleId) {
  */
 export function addRole (params) {
   return request({
-    url: '/role/add',
+    url: `${PREFIX_URL}/add`,
     method: 'post',
     data: params
   })
@@ -52,7 +54,7 @@ export function addRole (params) {
  */
 export function updateRole (params) {
   return request({
-    url: '/role/update',
+    url: `${PREFIX_URL}/update`,
     method: 'put',
     data: params
   })
@@ -64,7 +66,7 @@ export function updateRole (params) {
  */
 export function deleteRole (roleId) {
   return request({
-    url: '/role/delete/' + roleId,
+    url: `${PREFIX_URL}/delete/${roleId}`,
     method: 'delete'
   })
 }

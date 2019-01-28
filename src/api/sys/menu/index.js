@@ -1,8 +1,10 @@
 import request from '@/plugin/axios'
 
+const PREFIX_URL = '/sys/menu/'
+
 export function getMenuList (params) {
   return request({
-    url: '/menu/list',
+    url: `${PREFIX_URL}/list`,
     method: 'get',
     params
   })
@@ -14,7 +16,7 @@ export function getMenuList (params) {
  */
 export function menuInfo (params) {
   return request({
-    url: '/menu/get/' + params,
+    url: `${PREFIX_URL}/get/${params}`,
     method: 'get'
   })
 }
@@ -25,7 +27,7 @@ export function menuInfo (params) {
  */
 export function deleteMenu (menuId) {
   return request({
-    url: '/menu/delete/' + menuId,
+    url: `${PREFIX_URL}/delete/${menuId}`,
     method: 'delete'
   })
 }
@@ -38,7 +40,7 @@ export function updateMemu (params) {
   // chirld不需要提交 先删除
   delete params.children
   return request({
-    url: '/menu/update',
+    url: `${PREFIX_URL}/update`,
     method: 'put',
     data: params
   })
@@ -50,7 +52,7 @@ export function addMemu (params) {
   // chirld不需要提交 先删除
   delete params.children
   return request({
-    url: '/menu/add',
+    url: `${PREFIX_URL}/add`,
     method: 'post',
     data: params
   })

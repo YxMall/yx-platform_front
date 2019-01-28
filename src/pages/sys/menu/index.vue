@@ -1,30 +1,6 @@
 <template>
   <d2-container>
     <template slot="header">
-      <el-form :inline="true"
-               class="d2-pl-15 d2-pt-15"
-               ref="params">
-        <el-form-item label="菜单名称"
-                      prop="menuName">
-          <el-input placeholder="输入关键字进行过滤"
-                    v-model="menuName">
-          </el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary"
-                     v-show="isAuth('sys:menu:list')"
-                     @click="getMenuData">
-            <d2-icon name="search" />
-            查询
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="handleFormReset">
-            <d2-icon name="refresh" />
-            重置
-          </el-button>
-        </el-form-item>
-      </el-form>
       <el-button-group>
         <el-button type="primary"
                    v-show="isAuth('sys:menu:add')"

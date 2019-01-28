@@ -1,10 +1,12 @@
 import request from '@/plugin/axios'
+
+const PREFIX_URL = '/oa/notifyRecord/'
 /**
  * 获取当前账号未读信息数量
  */
 export function getUnreadCount () {
   return request({
-    url: '/oa/notifyRecord/getUnreadCount',
+    url: `${PREFIX_URL}getUnreadCount`,
     method: 'get'
   })
 }
@@ -15,7 +17,7 @@ export function getUnreadCount () {
  */
 export function getNotifyRecordData (params) {
   return request({
-    url: '/oa/notifyRecord/list',
+    url: `${PREFIX_URL}list`,
     method: 'get',
     params
   })
@@ -26,7 +28,7 @@ export function getNotifyRecordData (params) {
  */
 export function updateRecord (record) {
   return request({
-    url: '/oa/notifyRecord/update',
+    url: `${PREFIX_URL}update`,
     method: 'put',
     data: record
   })
@@ -37,7 +39,7 @@ export function updateRecord (record) {
  */
 export function deleteRecord (recordIds) {
   return request({
-    url: '/oa/notifyRecord/delete',
+    url: `${PREFIX_URL}delete`,
     method: 'delete',
     data: recordIds
   })
@@ -49,7 +51,7 @@ export function deleteRecord (recordIds) {
  */
 export function notifyRecordInfo (id) {
   return request({
-    url: '/oa/notifyRecord/get/' + id,
+    url: `${PREFIX_URL}get/${id}`,
     method: 'get'
   })
 }

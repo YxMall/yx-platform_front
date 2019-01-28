@@ -26,60 +26,97 @@
                src="./image/logo@2x.png">
           <!-- 表单 -->
           <div class="page-login--form">
-            <el-card shadow="never">
-              <el-form ref="loginForm"
-                       label-position="top"
-                       :rules="rules"
-                       :model="formLogin"
-                       size="default">
-                <el-form-item prop="username">
-                  <el-input type="text"
-                            v-model="formLogin.username"
-                            placeholder="用户名">
-                    <i slot="prepend"
-                       class="fa fa-user-circle-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                  <el-input type="password"
-                            v-model="formLogin.password"
-                            placeholder="密码">
-                    <i slot="prepend"
-                       class="fa fa-keyboard-o"></i>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="code">
-                  <el-input type="text"
-                            @keyup.enter.native="submit"
-                            v-model="formLogin.code"
-                            placeholder="- - - -">
-                    <template slot="prepend">验证码</template>
-                    <template slot="append">
-                      <img class="login-code"
-                           :src="path"
-                           @click="getImageCodePath">
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-button size="default"
-                           @click="submit"
-                           type="primary"
-                           class="button-login">登录</el-button>
-              </el-form>
-            </el-card>
+            <el-tabs v-model="activeName">
+              <el-tab-pane name="accountLogin">
+                <span slot="label">
+                  <d2-icon name='user-circle' />
+                  账号密码登录</span>
+                <el-card shadow="never">
+                  <el-form ref="loginForm"
+                           label-position="top"
+                           :rules="rules"
+                           :model="formLogin"
+                           size="default">
+                    <el-form-item prop="username">
+                      <el-input type="text"
+                                v-model="formLogin.username"
+                                placeholder="用户名">
+                        <i slot="prepend"
+                           class="fa fa-user-circle-o"></i>
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                      <el-input type="password"
+                                v-model="formLogin.password"
+                                placeholder="密码">
+                        <i slot="prepend"
+                           class="fa fa-keyboard-o"></i>
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item prop="code">
+                      <el-input type="text"
+                                @keyup.enter.native="submit('loginForm')"
+                                v-model="formLogin.code"
+                                placeholder="- - - -">
+                        <template slot="prepend">验证码</template>
+                        <template slot="append">
+                          <img class="login-code"
+                               :src="path"
+                               @click="getImageCodePath">
+                        </template>
+                      </el-input>
+                    </el-form-item>
+                    <el-button size="default"
+                               @click="submit('loginForm')"
+                               type="primary"
+                               class="button-login">登录</el-button>
+                  </el-form>
+                </el-card>
+
+              </el-tab-pane>
+              <el-tab-pane name="mobileLogin">
+                <span slot="label">
+                  <d2-icon name='mobile' />
+                  短信验证登录</span>
+                <el-card shadow="never">
+                  <el-form ref="mobileLoginForm"
+                           label-position="top"
+                           :rules="mobileLoginRules"
+                           :model="mobileLogin"
+                           size="default">
+                    <el-form-item prop="mobile">
+                      <el-input type="text"
+                                v-model="mobileLogin.mobile"
+                                placeholder="手机号码">
+                        <i slot="prepend"
+                           class="fa fa-mobile"></i>
+                      </el-input>
+                    </el-form-item>
+                    <el-form-item prop="code">
+                      <el-input type="text"
+                                @keyup.enter.native="submit('mobileLoginForm')"
+                                v-model="mobileLogin.code"
+                                placeholder="- - - -">
+                        <template slot="prepend">验证码</template>
+                      </el-input>
+                    </el-form-item>
+                    <el-button size="default"
+                               @click="submit('mobileLoginForm')"
+                               type="primary"
+                               class="button-login">登录</el-button>
+                  </el-form>
+                </el-card>
+              </el-tab-pane>
+            </el-tabs>
             <p class="page-login--options"
                flex="main:justify cross:center">
               <span>
                 <d2-icon name="question-circle" /> 忘记密码</span>
               <span>注册用户</span>
             </p>
-            <!-- 快速登录按钮 -->
-            <el-button class="page-login--quick"
-                       size="default"
-                       type="info"
-                       @click="dialogVisible = true">
-              快速选择用户（测试功能）
-            </el-button>
+            <!-- 其他登录 -->
+            <!-- <d2-icon name='qq' /> -->
+            <!-- <d2-icon name='weixin' /> -->
           </div>
         </div>
         <div class="page-login--content-footer">
@@ -95,22 +132,6 @@
         </div>
       </div>
     </div>
-    <el-dialog title="快速选择用户"
-               :visible.sync="dialogVisible"
-               width="400px">
-      <el-row :gutter="10"
-              style="margin: -20px 0px -10px 0px;">
-        <el-col v-for="(user, index) in users"
-                :key="index"
-                :span="8">
-          <div class="page-login--quick-user"
-               @click="handleUserBtnClick(user)">
-            <d2-icon name="user-circle-o" />
-            <span>{{user.name}}</span>
-          </div>
-        </el-col>
-      </el-row>
-    </el-dialog>
   </div>
 </template>
 
@@ -121,30 +142,25 @@ import dayjs from 'dayjs'
 import { mapActions } from 'vuex'
 export default {
   data () {
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('手机号不能为空'));
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        console.log(reg.test(value));
+        if (reg.test(value)) {
+          callback();
+        } else {
+          return callback(new Error('请输入正确的手机号'));
+        }
+      }
+    };
     return {
+      activeName: 'accountLogin',
       content: '',
       author: '',
       timeInterval: null,
       time: dayjs().format('HH:mm:ss'),
-      // 快速选择用户
-      dialogVisible: false,
-      users: [
-        {
-          name: '管理员',
-          username: 'admin',
-          password: 'admin'
-        },
-        {
-          name: '编辑',
-          username: 'editor',
-          password: 'editor'
-        },
-        {
-          name: '用户1',
-          username: 'user1',
-          password: 'user1'
-        }
-      ],
       // 表单
       formLogin: {
         username: 'admin',
@@ -159,6 +175,19 @@ export default {
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入验证码', trigger: 'blur' }
+        ]
+      },
+      mobileLogin: {
+        mobile: '',
+        code: ''
+      },
+      // 校验
+      mobileLoginRules: {
+        mobile: [
+          { validator: checkPhone, trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' }
@@ -190,20 +219,11 @@ export default {
       this.time = dayjs().format('HH:mm:ss')
     },
     /**
-     * @description 接收选择一个用户快速登录的事件
-     * @param {Object} user 用户信息
-     */
-    handleUserBtnClick (user) {
-      this.formLogin.username = user.username
-      this.formLogin.password = user.password
-      this.submit()
-    },
-    /**
      * @description 提交表单
      */
     // 提交登录信息
-    submit () {
-      this.$refs.loginForm.validate((valid) => {
+    submit (formName) {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           // 登录
           // 注意 这里的演示没有传验证码

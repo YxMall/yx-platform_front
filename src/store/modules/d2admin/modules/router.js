@@ -31,7 +31,6 @@ function convertRouter (menu) {
   const addRoutes = []
   if (menu) {
     menu.forEach(m => {
-      debugger
       m.path = m.path || util.uuid()
       if (
         !/^https:\/\/|http:\/\//.test(m.path) &&
